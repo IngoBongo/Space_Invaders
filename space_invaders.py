@@ -42,6 +42,9 @@ def run_game():
 	# Make group for ground.
 	ground_blocks = func.create_ground(settings, screen)
 	
+	# Make group for lives.
+	remaining_lives = func.create_lives(settings, screen, player)
+	
 	# Start the main loop for Space Invaders.
 	while True:
 		func.check_events(settings, screen, player, player_shots)
@@ -49,7 +52,7 @@ def run_game():
 		func.update_player_shots(settings, screen, player_shots, 
 			ground_blocks)
 		func.update_screen(settings, screen, player, player_shots, 
-			ground_blocks)
+			ground_blocks, remaining_lives)
 		clock.tick(60)
 	
 run_game()

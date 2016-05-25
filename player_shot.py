@@ -44,7 +44,6 @@ class PlayerShot(Sprite):
 			self.rect.y = self.y
 			self.center = self.rect.centerx
 			
-
 	def shot_explode(self):
 		"""Change shot image into explode image."""
 		# Change image.
@@ -58,7 +57,4 @@ class PlayerShot(Sprite):
 		# set exploded flag to true and set time of explosion.
 		self.exploded = True
 		self.timer = pygame.time.get_ticks()
-		
-	def get_shot_rect(self):
-		"""Get rect of shot image."""
 		

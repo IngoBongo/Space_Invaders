@@ -5,6 +5,7 @@ import pygame.surfarray as surfarray
 from pygame.sprite import Group
 from player_shot import PlayerShot
 from block import Block
+from life import Life
 
 def check_events(settings, screen, player, player_shots):
 	"""Check for events and respond to them."""
@@ -40,7 +41,8 @@ def check_keyup_events(event, player):
 	if event.key == pygame.K_LEFT:
 		player.moving_left = False
 
-def update_screen(settings, screen, player, player_shots, ground_blocks):
+def update_screen(settings, screen, player, player_shots, ground_blocks,
+		remaining_lives):
 	"""Update every image on the screen then draw the screen."""
 	# Set the background color.
 	screen.fill(settings.black)
@@ -52,6 +54,7 @@ def update_screen(settings, screen, player, player_shots, ground_blocks):
 	player.blitme()
 	
 	ground_blocks.draw(screen)
+	remaining_lives.draw(screen)
 	
 	# Make the most recently drawn screen visible.
 	pygame.display.update()
@@ -108,6 +111,17 @@ def check_shot_ground_collisions(settings, screen, player_shots,
 		ground_blocks):
 	"""Respond to shot-ground collisions."""
 	collisions = pygame.sprite.groupcollide(player_shots, ground_blocks, False, True)
+	
+def create_lives(settings, screen, player):
+	remaining_lives = Group()
+	
+	for number in range(player.remaining_lives - 1):
+		new_life = Life(settings, screen)
+		new_life.rect.x = 80 + (12 + new_life.rect.w) * number
+		new_life.rect.y = settings.life_height
+		remaining_lives.add(new_life)
+	
+	return remaining_lives
 	
 """
 def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship,

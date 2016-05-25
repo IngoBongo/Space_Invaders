@@ -11,7 +11,7 @@ class Player(Sprite):
 		self.settings = settings
 		
 		# Load ship image and set rect for image and screen.
-		self.image = pygame.image.load('images/ships/player.png')
+		self.image = settings.player_ship_image
 		self.rect = self.image.get_rect()
 		self.screen_rect = screen.get_rect()
 		
@@ -26,6 +26,9 @@ class Player(Sprite):
 		# Movement flags.
 		self.moving_right = False
 		self.moving_left = False
+		
+		# Lives remaining.
+		self.remaining_lives = settings.player_lives
 	
 	def blitme(self):
 		"""Draw the ship at its current location."""
@@ -33,14 +36,14 @@ class Player(Sprite):
 		
 	def update(self):
 		"""Update position of the player depending on movement flags."""
-		# Update value of center based on movement flags and
-		# prevent player from moving off screen.
+		# Update value of center based on movement flags
 		if (self.moving_right and 
 				self.rect.right < self.settings.screen_width):
 			self.rect.centerx += self.settings.player_speed
 		if (self.moving_left and self.rect.left > 0):
 			self.rect.centerx -= self.settings.player_speed
 		
+		# Correct rect if player_speed makes ship go off screen.
 		self.correct_rect()
 	
 	def correct_rect(self):
