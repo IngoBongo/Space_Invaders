@@ -14,12 +14,15 @@ from pygame.sprite import Group
 def run_game():
 	"""Main function for Space Invaders."""
 	
-	# Initialize game and create settings and screen object.
+	# Initialize game.
 	pygame.mixer.pre_init(44100, -16, 1, 512)
 	pygame.init()
 	settings = Settings()
+	
 	# Ensure correct screen size to be displayed.
 	ctypes.windll.user32.SetProcessDPIAware()
+	
+	# Set screensize and caption.
 	screen = pygame.display.set_mode((settings.screen_width, 
 		settings.screen_height))
 	pygame.display.set_caption(settings.caption)
@@ -39,10 +42,10 @@ def run_game():
 	player_shots = Group()
 	invader_shots = Group()
 	
-	# Make group for ground.
+	# Make group for ground and initialise it.
 	ground_blocks = func.create_ground(settings, screen)
 	
-	# Make group for lives.
+	# Make group for lives and initialise it.
 	remaining_lives = func.create_lives(settings, screen, player)
 	
 	# Start the main loop for Space Invaders.
@@ -53,6 +56,6 @@ def run_game():
 			ground_blocks)
 		func.update_screen(settings, screen, player, player_shots, 
 			ground_blocks, remaining_lives)
-		clock.tick(60)
+		clock.tick(settings.fps)
 	
 run_game()

@@ -11,6 +11,9 @@ class Settings():
 		self.screen_height = 700
 		self.caption = "Space Invaders"
 		
+		# FPS settings
+		self.fps = 60
+		
 		# Game font
 		self.font = "fonts/space_invaders.ttf"
 		
