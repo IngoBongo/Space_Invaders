@@ -11,6 +11,9 @@ class Settings():
 		self.screen_height = 700
 		self.caption = "Space Invaders"
 		
+		# Game font
+		self.font = "fonts/space_invaders.ttf"
+		
 		# Game sounds
 		self.player_shoot = pygame.mixer.Sound("sounds/player_shoot.wav")
 		self.player_shoot.set_volume(0.2)
@@ -30,10 +33,7 @@ class Settings():
 		# Shot settings
 		self.playershot_speed = 8
 		self.playershot_limit = 1
-	
-	def get_sounds(self):
-		self.sounds = {}
-		for sound_name in ["player_shoot"]:
-			self.sounds[sound_name] = pygame.mixer.Sound(
-						"sounds/{}.wav".format(sound_name))
-			self.sounds[sound_name].set_volume(0.2)
+		
+		# Block settings
+		self.block_size = 4
+		self.block_color = self.green

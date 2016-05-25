@@ -79,7 +79,3 @@ def color_surface(surface, rgb_color):
 	arr[:,:,0:] = rgb_color[0]
 	arr[:,:,1:] = rgb_color[1]
 	arr[:,:,2:] = rgb_color[2]
-
-def color_surface_green(surface):
-	arr = pygame.surfarray.pixels3d(surface)
-	arr[:,:,0:] = 0
