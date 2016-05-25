@@ -4,9 +4,9 @@ from pygame.sprite import Sprite
 class Block(Sprite):
 	"""A class representing a single block."""
 	
-	def __init__(self, settings):
+	def __init__(self, settings, screen):
 		"""Initialize Block."""
-		
+		self.screen = screen
 		self.width = settings.block_size
 		self.height = settings.block_size
 		self.color = settings.block_color
@@ -16,3 +16,4 @@ class Block(Sprite):
 		
 	def blitme(self):
 		"""Draw the block at its current location."""
+		self.screen.blit(self.image, self.rect)

@@ -67,7 +67,7 @@ def update_player_shots(settings, player_shots):
 	
 	for shot in player_shots:
 		if shot.rect.bottom < 140:
-			color_surface(shot.shot, settings.red)
+			color_surface(shot.image, settings.red)
 		if shot.rect.bottom < 80:
 			shot.shot_explode()
 		currentTime = pygame.time.get_ticks()

@@ -13,15 +13,15 @@ class PlayerShot(Sprite):
 		self.player = player
 		
 		# Load shot image and set its rect.
-		self.shot = pygame.image.load("images/shots/player_shot.png")
-		self.rect = self.shot.get_rect()
+		self.image = pygame.image.load("images/shots/player_shot.png")
+		self.rect = self.image.get_rect()
 		self.rect.centerx = player.rect.centerx
 		self.rect.top = player.rect.top
 		
 		# Load explode image.
 		self.explode = pygame.image.load("images/explosions/ship_shot_explosion1.png")
 		
-		# Store a decimal value for the PlayerShot position.
+		# Store a decimal value for the shot position.
 		self.y = float(self.rect.y)
 		self.center = float(player.rect.centerx)
 		
@@ -33,11 +33,11 @@ class PlayerShot(Sprite):
 		
 	def blitme(self):
 		"""Draw the PlayerShot at it's current location."""
-		self.screen.blit(self.shot, self.rect)
+		self.screen.blit(self.image, self.rect)
 	
 	def update(self):
 		"""Update position of bullet."""
-		# Move PlayerShot up the screen if it hasn't exploded.
+		# Move shot up the screen if it hasn't exploded.
 		if not self.exploded:
 			self.y -= self.settings.playershot_speed
 			# Update the rect.
@@ -48,10 +48,10 @@ class PlayerShot(Sprite):
 	def shot_explode(self):
 		"""Change shot image into explode image."""
 		# Change image.
-		self.shot = self.explode
+		self.image = self.explode
 		
 		# Get new rect.
-		self.rect = self.shot.get_rect()
+		self.rect = self.image.get_rect()
 		self.rect.centerx = self.center
 		self.rect.y = self.y
 		
