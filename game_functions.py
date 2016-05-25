@@ -53,9 +53,9 @@ def update_screen(settings, screen, player, player_shots, ground_blocks,
 	
 	# Draw the player ship.
 	player.blitme()
-	show_lives(settings, screen, player, ground_blocks)
-	
-	remaining_lives.draw(screen)
+	ground_blocks.draw(screen)
+	show_score(settings, screen)
+	show_lives(settings, screen, player, remaining_lives)
 	
 	# Make the most recently drawn screen visible.
 	pygame.display.update()
@@ -124,11 +124,23 @@ def create_lives(settings, screen, player):
 	
 	return remaining_lives
 	
-def show_lives(settings, screen, player, ground_blocks):
-	ground_blocks.draw(screen)
+def show_lives(settings, screen, player, remaining_lives):
+	remaining_lives.draw(screen)
 	lives_text = Text(settings, screen, 32, str(player.remaining_lives),
 		settings.white, 32, settings.life_height)
 	lives_text.blitme()
+	
+def show_score(settings, screen):
+	player1_score_text = Text(settings, screen, 22, "SCORE <1>",
+		settings.white, 32, 32)
+	hi_score_text = Text(settings, screen, 22, "HI-SCORE",
+		settings.white, player1_score_text.rect.right + 90, 32)
+	player2_score_text = Text(settings, screen, 22, "SCORE <2>",
+		settings.white, hi_score_text.rect.right + 90, 32)
+	
+	player1_score_text.blitme()
+	hi_score_text.blitme()
+	player2_score_text.blitme()
 	
 """
 def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship,
