@@ -46,8 +46,10 @@ def run_game():
 	while True:
 		func.check_events(settings, screen, player, player_shots)
 		player.update()
-		func.update_player_shots(settings, player_shots)
-		func.update_screen(settings, screen, player, player_shots, ground_blocks)
+		func.update_player_shots(settings, screen, player_shots, 
+			ground_blocks)
+		func.update_screen(settings, screen, player, player_shots, 
+			ground_blocks)
 		clock.tick(60)
 	
 run_game()

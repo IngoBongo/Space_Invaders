@@ -46,8 +46,7 @@ def update_screen(settings, screen, player, player_shots, ground_blocks):
 	screen.fill(settings.black)
 	
 	# Draw player shots.
-	for shot in player_shots:
-		shot.blitme()
+	player_shots.draw(screen)
 	
 	# Draw the player ship.
 	player.blitme()
@@ -60,12 +59,17 @@ def update_screen(settings, screen, player, player_shots, ground_blocks):
 def player_shoot(settings, screen, player, player_shots):
 	"""Shoot from player if shot limit has not been reached."""
 	if len(player_shots) < settings.playershot_limit:
+		# Create shot and add to player_shots group.
 		player_shot = PlayerShot(settings, screen, player)
 		player_shots.add(player_shot)
+		# Play shooting sound effect.
 		settings.player_shoot.play()
 
-def update_player_shots(settings, player_shots):
-	"""Update position of player shots and remove old shots."""
+def update_player_shots(settings, screen, player_shots, ground_blocks):
+	"""
+	Update position of player shots, explode shots that reach
+	a certain height and then remove them.
+	"""
 	player_shots.update()
 	
 	for shot in player_shots:
@@ -76,6 +80,9 @@ def update_player_shots(settings, player_shots):
 		currentTime = pygame.time.get_ticks()
 		if shot.exploded and currentTime - shot.timer > 300:
 				player_shots.remove(shot)
+	
+	check_shot_ground_collisions(settings, screen, player_shots, 
+		ground_blocks)
 
 def color_surface(surface, rgb_color):
 	"""Change color of surface to the value of rgb_color tuple."""
@@ -85,17 +92,47 @@ def color_surface(surface, rgb_color):
 	arr[:,:,2:] = rgb_color[2]
 
 def create_ground(settings, screen):
+	"""Create a ground line under player."""
 	ground_blocks = Group()
 	
+	# Calculate how many blocks fit on the screen and create them.
 	for column in range(int(settings.screen_width / settings.block_size)):
 		block = Block(settings, screen)
 		block.rect.x = column * settings.block_size
 		block.rect.y = settings.ground_height
 		ground_blocks.add(block)
-		print(column * 4)
 	
 	return ground_blocks
 	
+def check_shot_ground_collisions(settings, screen, player_shots, 
+		ground_blocks):
+	"""Respond to shot-ground collisions."""
+	collisions = pygame.sprite.groupcollide(player_shots, ground_blocks, False, True)
+	
+"""
+def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship,
+		aliens, bullets):
+	Respond to bullet-alien collisions.
+	# Remove any bullets and aliens that have collided.
+	collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+	
+	if collisions:
+		for aliens in collisions.values():
+			stats.score += ai_settings.alien_points * len(aliens)
+			sb.prep_score()
+		check_high_score(stats, sb)
+	
+	if len(aliens) == 0:
+		# If the entire fleet is destroyed, start a new level.
+		bullets.empty()
+		ai_settings.increase_speed()
+		
+		# Increase level.
+		stats.level += 1
+		sb.prep_level()
+		
+		create_fleet(ai_settings, screen, ship, aliens)
+"""
 """
 def makeBlockers(self, number=1):
 	blockerGroup = pygame.sprite.Group()
