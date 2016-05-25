@@ -6,6 +6,7 @@ from pygame.sprite import Group
 from player_shot import PlayerShot
 from block import Block
 from life import Life
+from text import Text
 
 def check_events(settings, screen, player, player_shots):
 	"""Check for events and respond to them."""
@@ -52,8 +53,8 @@ def update_screen(settings, screen, player, player_shots, ground_blocks,
 	
 	# Draw the player ship.
 	player.blitme()
+	show_lives(settings, screen, player, ground_blocks)
 	
-	ground_blocks.draw(screen)
 	remaining_lives.draw(screen)
 	
 	# Make the most recently drawn screen visible.
@@ -122,6 +123,12 @@ def create_lives(settings, screen, player):
 		remaining_lives.add(new_life)
 	
 	return remaining_lives
+	
+def show_lives(settings, screen, player, ground_blocks):
+	ground_blocks.draw(screen)
+	lives_text = Text(settings, screen, 32, str(player.remaining_lives),
+		settings.white, 32, settings.life_height)
+	lives_text.blitme()
 	
 """
 def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship,
