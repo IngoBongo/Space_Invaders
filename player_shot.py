@@ -13,13 +13,13 @@ class PlayerShot(Sprite):
 		self.player = player
 		
 		# Load shot image and set its rect.
-		self.image = pygame.image.load("images/shots/player_shot.png")
+		self.image = settings.playershot_image
 		self.rect = self.image.get_rect()
 		self.rect.centerx = player.rect.centerx
 		self.rect.top = player.rect.top
 		
 		# Load explode image.
-		self.explode = pygame.image.load("images/explosions/ship_shot_explosion1.png")
+		self.explode = settings.playershot_explode
 		
 		# Store a decimal value for the shot position.
 		self.y = float(self.rect.y)
