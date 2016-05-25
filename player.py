@@ -17,7 +17,7 @@ class Player(Sprite):
 		
 		# Set the players starting position.
 		self.rect.centerx = self.screen_rect.centerx
-		self.rect.bottom = self.screen_rect.bottom - 235
+		self.rect.bottom = self.screen_rect.bottom - 75
 		#self.rect.centery = self.screen_rect.centery
 		
 		# Store a decimal value for the ships center for fluid movement.
@@ -26,9 +26,6 @@ class Player(Sprite):
 		# Movement flags.
 		self.moving_right = False
 		self.moving_left = False
-		
-		# Offset value for x to keep player inside game screen.
-		self.offsetx = settings.offsetx
 	
 	def blitme(self):
 		"""Draw the ship at its current location."""
@@ -39,19 +36,17 @@ class Player(Sprite):
 		# Update value of center based on movement flags and
 		# prevent player from moving off screen.
 		if (self.moving_right and 
-				self.rect.right < self.settings.screen_width - self.offsetx):
-			self.center += self.settings.player_speed
-		if (self.moving_left and self.rect.left > self.offsetx):
-			self.center -= self.settings.player_speed
+				self.rect.right < self.settings.screen_width):
+			self.rect.centerx += self.settings.player_speed
+		if (self.moving_left and self.rect.left > 0):
+			self.rect.centerx -= self.settings.player_speed
 		
-		# Update rect based on value of center.
-		self.rect.centerx = self.center
-		
-		# Correct rect and center if player_speed made ship go too far.
-		if self.rect.right > self.settings.screen_width - self.offsetx:
-			self.rect.right = self.settings.screen_width - self.offsetx
-			self.center = self.rect.centerx
-		elif self.rect.left < self.offsetx:
-			self.rect.left = self.offsetx
-			self.center = self.rect.centerx
+		self.correct_rect()
+	
+	def correct_rect(self):
+		"""Correct rect if ship is off screen."""
+		if self.rect.right > self.settings.screen_width:
+			self.rect.right = self.settings.screen_width
+		elif self.rect.left < 0:
+			self.rect.left = 0
 		

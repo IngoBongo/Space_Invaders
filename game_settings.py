@@ -7,23 +7,20 @@ class Settings():
 		"""Initialize game settings."""
 		
 		# Screen settings
-		self.screen_width = 1024
-		self.screen_height = 896
-		# Offset x and y to make game screen "inside" the arcade.
-		self.offsetx = 200
-		self.offsety = 185
+		self.screen_width = 800
+		self.screen_height = 700
 		self.caption = "Space Invaders"
-		# Source for arcade background image:
-		# http://orig02.deviantart.net/3ed1/f/2009/242/f/4/space_invaders_sprite_sheet_by_gooperblooper22.png
-		self.background_arcade = pygame.image.load("images/background/arcade_big.png")
 		
 		# Game sounds
-		self.get_sounds()
+		self.player_shoot = pygame.mixer.Sound("sounds/player_shoot.wav")
+		self.player_shoot.set_volume(0.2)
 		
 		# Color settings
 		self.black = (0, 0 ,0)
 		self.white = (255, 255, 255)
+		self.red = (255, 0, 0)
 		self.green = (0, 255, 0)
+		self.blue = (0, 0, 255)
 		#self.game_screen_blue = (54, 48, 97)
 		self.game_screen_blue = (49, 49, 104)
 		
@@ -31,7 +28,7 @@ class Settings():
 		self.player_speed = 5
 		
 		# Shot settings
-		self.playershot_speed = 5
+		self.playershot_speed = 8
 		self.playershot_limit = 1
 	
 	def get_sounds(self):

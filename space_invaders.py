@@ -13,6 +13,7 @@ from pygame.sprite import Group
 
 def run_game():
 	"""Main function for Space Invaders."""
+	
 	# Initialize game and create settings and screen object.
 	pygame.mixer.pre_init(44100, -16, 1, 512)
 	pygame.init()
