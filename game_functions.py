@@ -78,7 +78,6 @@ def update_player_shots(settings, screen, player_shots, ground_blocks):
 	
 	for shot in player_shots:
 		if not shot.is_red and shot.rect.bottom < 140:
-			print("color")
 			color_surface(shot.image, settings.red)
 			shot.is_red = True
 		if shot.rect.bottom < 80:
