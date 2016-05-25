@@ -35,16 +35,19 @@ def run_game():
 	# Make player object.
 	player = Player(settings, screen)
 	
-	# Make player shot object.
+	# Make player shot object Group.
 	player_shots = Group()
 	invader_shots = Group()
+	
+	# Make group for ground.
+	ground_blocks = func.create_ground(settings, screen)
 	
 	# Start the main loop for Space Invaders.
 	while True:
 		func.check_events(settings, screen, player, player_shots)
 		player.update()
 		func.update_player_shots(settings, player_shots)
-		func.update_screen(settings, screen, player, player_shots)
+		func.update_screen(settings, screen, player, player_shots, ground_blocks)
 		clock.tick(60)
 	
 run_game()

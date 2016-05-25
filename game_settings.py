@@ -37,3 +37,6 @@ class Settings():
 		# Block settings
 		self.block_size = 4
 		self.block_color = self.green
+		
+		# Ground settings
+		self.ground_height = settings.screen_height - 70
