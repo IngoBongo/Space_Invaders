@@ -16,7 +16,7 @@ class Player(Sprite):
 		self.screen_rect = screen.get_rect()
 		
 		# Set the players starting position.
-		self.rect.centerx = self.screen_rect.centerx
+		self.rect.left = settings.player_offsetx
 		self.rect.bottom = self.screen_rect.bottom - 75
 		#self.rect.centery = self.screen_rect.centery
 		

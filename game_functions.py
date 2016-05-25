@@ -100,9 +100,10 @@ def create_ground(settings, screen):
 	ground_blocks = Group()
 	
 	# Calculate how many blocks fit on the screen and create them.
-	for column in range(int(settings.screen_width / settings.block_size)):
+	for column in range(int((settings.screen_width / settings.block_size) - 
+					    int((settings.ground_offsetx * 2) / settings.block_size))):
 		block = Block(settings, screen)
-		block.rect.x = column * settings.block_size
+		block.rect.x = settings.ground_offsetx + settings.block_size * column
 		block.rect.y = settings.ground_height
 		ground_blocks.add(block)
 	
@@ -118,7 +119,8 @@ def create_lives(settings, screen, player):
 	
 	for number in range(player.remaining_lives - 1):
 		new_life = Life(settings, screen)
-		new_life.rect.x = 80 + (12 + new_life.rect.w) * number
+		new_life.rect.x = (settings.life_ship_offsetx + 
+			(settings.life_ship_spacing + new_life.rect.w) * number)
 		new_life.rect.y = settings.life_height
 		remaining_lives.add(new_life)
 	
@@ -126,8 +128,8 @@ def create_lives(settings, screen, player):
 	
 def show_lives(settings, screen, player, remaining_lives):
 	remaining_lives.draw(screen)
-	lives_text = Text(settings, screen, 32, str(player.remaining_lives),
-		settings.white, 32, settings.life_height)
+	lives_text = Text(settings, screen, 25, str(player.remaining_lives),
+		settings.white, settings.life_text_offsetx, settings.life_height)
 	lives_text.blitme()
 	
 def show_score(settings, screen):
