@@ -131,12 +131,13 @@ def show_lives(settings, screen, player, remaining_lives):
 	lives_text.blitme()
 	
 def show_score(settings, screen):
-	player1_score_text = Text(settings, screen, 22, "SCORE <1>",
-		settings.white, 32, 32)
-	hi_score_text = Text(settings, screen, 22, "HI-SCORE",
-		settings.white, player1_score_text.rect.right + 90, 32)
-	player2_score_text = Text(settings, screen, 22, "SCORE <2>",
-		settings.white, hi_score_text.rect.right + 90, 32)
+	player1_score_text = Text(settings, screen, 25, "S C O R E <  1  >",
+		settings.white, 80, 26)
+	hi_score_text = Text(settings, screen, 25, "H  I  - S C O R E",
+		settings.white, 0, 26)
+	hi_score_text.set_rect_centerx(settings.screen_width / 2)
+	player2_score_text = Text(settings, screen, 25, "S C O R E <  2 >",
+		settings.white, settings.screen_width - player1_score_text.rect.right, 26)
 	
 	player1_score_text.blitme()
 	hi_score_text.blitme()

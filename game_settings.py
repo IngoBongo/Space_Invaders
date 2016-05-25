@@ -45,4 +45,4 @@ class Settings():
 		self.ground_height = self.screen_height - 71
 		
 		# Life settings
-		self.life_height = self.screen_height - 60
+		self.life_height = self.screen_height - 64

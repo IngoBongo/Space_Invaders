@@ -17,3 +17,6 @@ class Text:
 	def blitme(self):
 		"""Draw the text at its current position."""
 		self.screen.blit(self.image, self.rect)
+
+	def set_rect_centerx(self, centerx):
+		self.rect.centerx = centerx
