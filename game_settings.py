@@ -38,11 +38,6 @@ class Settings():
 		# Shot settings
 		self.playershot_speed = 8
 		self.playershot_limit = 1
-		self.playershot_image = pygame.transform.scale(
-			pygame.image.load("images/shots/player_shot.png"), (3, 12))
-		self.playershot_explode = pygame.transform.scale(
-			pygame.image.load("images/explosions/ship_shot_explosion1.png"),
-			(24, 24))
 		
 		# Block settings
 		self.block_size = 3

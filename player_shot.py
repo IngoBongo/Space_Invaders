@@ -13,20 +13,24 @@ class PlayerShot(Sprite):
 		self.player = player
 		
 		# Load shot image and set its rect.
-		self.image = settings.playershot_image
+		self.image = pygame.transform.scale(
+			pygame.image.load("images/shots/player_shot.png"), (3, 12))
 		self.rect = self.image.get_rect()
 		self.rect.centerx = player.rect.centerx
 		self.rect.top = player.rect.top
 		
 		# Load explode image.
-		self.explode = settings.playershot_explode
+		self.explode = pygame.transform.scale(
+			pygame.image.load("images/explosions/ship_shot_explosion1.png"),
+			(24, 24))
 		
 		# Store a decimal value for the shot position.
 		self.y = float(self.rect.y)
 		self.center = float(player.rect.centerx)
 		
-		# Set exploded flag.
+		# Set exploded flag and color flag.
 		self.exploded = False
+		self.is_red = False
 		
 		# Set timer.
 		self.timer = pygame.time.get_ticks()
@@ -48,6 +52,7 @@ class PlayerShot(Sprite):
 		"""Change shot image into explode image."""
 		# Change image.
 		self.image = self.explode
+		self.is_red = False
 		
 		# Get new rect.
 		self.rect = self.image.get_rect()
