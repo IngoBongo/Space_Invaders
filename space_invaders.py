@@ -1,10 +1,10 @@
-##################################
+#================================#
 #      Space Invaders Clone	     #
-##################################
+#================================#
 # Created by Hlynur Stefánsson   #
 # github.com/hlynurstef			 #
 # hlynurstef@gmail.com			 #
-##################################
+#================================#
 
 import pygame
 import ctypes

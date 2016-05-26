@@ -29,14 +29,14 @@ class Settings():
 		self.blue = (0, 0, 255)
 		
 		# Player settings
-		self.player_speed = 5
+		self.player_speed = 3
 		self.player_offsetx = 106
 		self.player_ship_image = pygame.image.load(
 			"images/ships/player.png")
 		self.player_lives = 3
 		
 		# Shot settings
-		self.playershot_speed = 8
+		self.playershot_speed = 11
 		self.playershot_limit = 1
 		
 		# Block settings
