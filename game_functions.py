@@ -80,11 +80,11 @@ def update_player_shots(settings, screen, player_shots, ground_blocks):
 		if not shot.is_red and shot.rect.bottom < 140:
 			color_surface(shot.image, settings.red)
 			shot.is_red = True
-		if shot.rect.top < 87:
-			shot.shot_explode()
+		if not shot.exploded and shot.rect.top < 82:
+			shot.shot_explode(82)
 		currentTime = pygame.time.get_ticks()
 		if shot.exploded and currentTime - shot.timer > 300:
-				player_shots.remove(shot)
+			player_shots.remove(shot)
 	
 	check_shot_ground_collisions(settings, screen, player_shots, 
 		ground_blocks)

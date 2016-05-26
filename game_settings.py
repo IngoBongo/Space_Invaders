@@ -54,7 +54,7 @@ class Settings():
 		self.life_ship_spacing = 9
 		
 		# Score Settings
-		self.score_text_height = 26
-		self.score_height = 51
-		self.player1_score_x = 130
+		self.score_text_height = 25
+		self.score_height = 50
+		self.player1_score_x = 128
 		self.hi_score_x = 330

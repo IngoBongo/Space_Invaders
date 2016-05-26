@@ -20,7 +20,7 @@ class ScoreBoard:
 		"""Create rendered image for scoreboard text."""
 		# Text for player 1 score, displayed at left side of screen.
 		self.player1_score_text = Text(self.settings, self.screen, 25, 
-			"S C O R E <  1  >", self.settings.white, 80, 
+			"S C O R E <  1  >", self.settings.white, 78, 
 			self.settings.score_text_height)
 			
 		# Text for hi-score, displayed in middle of screen.
@@ -33,7 +33,7 @@ class ScoreBoard:
 		# Text for player 2 score, displayed at right side of screen.
 		self.player2_score_text = Text(self.settings, self.screen, 25, 
 			"S C O R E <  2 >", self.settings.white, 
-			self.settings.screen_width - self.player1_score_text.rect.right,
+			self.settings.screen_width - self.player1_score_text.rect.right - 3,
 			self.settings.score_text_height)
 		
 	def prep_player1_score(self):
