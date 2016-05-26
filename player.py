@@ -29,6 +29,14 @@ class Player(Sprite):
 		
 		# Lives remaining.
 		self.remaining_lives = settings.player_lives
+		
+		# Set boundaries.
+		self.left_boundary = settings.player_offsetx
+		self.right_boundary = (self.settings.screen_width - 
+			self.settings.player_offsetx)
+		
+		# Players score.
+		self.score = 0
 	
 	def blitme(self):
 		"""Draw the ship at its current location."""
@@ -37,10 +45,9 @@ class Player(Sprite):
 	def update(self):
 		"""Update position of the player depending on movement flags."""
 		# Update value of center based on movement flags
-		if (self.moving_right and 
-				self.rect.right < self.settings.screen_width):
+		if (self.moving_right and self.rect.right < self.right_boundary):
 			self.rect.centerx += self.settings.player_speed
-		if (self.moving_left and self.rect.left > 0):
+		if (self.moving_left and self.rect.left > self.left_boundary):
 			self.rect.centerx -= self.settings.player_speed
 		
 		# Correct rect if player_speed makes ship go off screen.
@@ -48,8 +55,10 @@ class Player(Sprite):
 	
 	def correct_rect(self):
 		"""Correct rect if ship is off screen."""
-		if self.rect.right > self.settings.screen_width:
-			self.rect.right = self.settings.screen_width
-		elif self.rect.left < 0:
-			self.rect.left = 0
+		if self.rect.right > self.right_boundary:
+			self.rect.right = self.right_boundary
+		elif self.rect.left < self.left_boundary:
+			self.rect.left = self.left_boundary
 		
+	def reset_score(self):
+		self.score = 0

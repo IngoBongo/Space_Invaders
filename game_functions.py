@@ -42,8 +42,8 @@ def check_keyup_events(event, player):
 	if event.key == pygame.K_LEFT:
 		player.moving_left = False
 
-def update_screen(settings, screen, player, player_shots, ground_blocks,
-		remaining_lives):
+def update_screen(settings, screen, scoreboard, player, player_shots,
+		ground_blocks, remaining_lives):
 	"""Update every image on the screen then draw the screen."""
 	# Set the background color.
 	screen.fill(settings.black)
@@ -54,7 +54,7 @@ def update_screen(settings, screen, player, player_shots, ground_blocks,
 	# Draw the player ship.
 	player.blitme()
 	ground_blocks.draw(screen)
-	show_score(settings, screen)
+	scoreboard.show_score()
 	show_lives(settings, screen, player, remaining_lives)
 	
 	# Make the most recently drawn screen visible.
@@ -80,7 +80,7 @@ def update_player_shots(settings, screen, player_shots, ground_blocks):
 		if not shot.is_red and shot.rect.bottom < 140:
 			color_surface(shot.image, settings.red)
 			shot.is_red = True
-		if shot.rect.bottom < 80:
+		if shot.rect.top < 87:
 			shot.shot_explode()
 		currentTime = pygame.time.get_ticks()
 		if shot.exploded and currentTime - shot.timer > 300:
@@ -132,44 +132,7 @@ def show_lives(settings, screen, player, remaining_lives):
 	lives_text = Text(settings, screen, 25, str(player.remaining_lives),
 		settings.white, settings.life_text_offsetx, settings.life_height)
 	lives_text.blitme()
-	
-def show_score(settings, screen):
-	player1_score_text = Text(settings, screen, 25, "S C O R E <  1  >",
-		settings.white, 80, 26)
-	hi_score_text = Text(settings, screen, 25, "H  I  - S C O R E",
-		settings.white, 0, 26)
-	hi_score_text.set_rect_centerx(settings.screen_width / 2)
-	player2_score_text = Text(settings, screen, 25, "S C O R E <  2 >",
-		settings.white, settings.screen_width - player1_score_text.rect.right, 26)
-	
-	player1_score_text.blitme()
-	hi_score_text.blitme()
-	player2_score_text.blitme()
-	
-"""
-def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship,
-		aliens, bullets):
-	Respond to bullet-alien collisions.
-	# Remove any bullets and aliens that have collided.
-	collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
-	
-	if collisions:
-		for aliens in collisions.values():
-			stats.score += ai_settings.alien_points * len(aliens)
-			sb.prep_score()
-		check_high_score(stats, sb)
-	
-	if len(aliens) == 0:
-		# If the entire fleet is destroyed, start a new level.
-		bullets.empty()
-		ai_settings.increase_speed()
-		
-		# Increase level.
-		stats.level += 1
-		sb.prep_level()
-		
-		create_fleet(ai_settings, screen, ship, aliens)
-"""
+
 """
 def makeBlockers(self, number=1):
 	blockerGroup = pygame.sprite.Group()

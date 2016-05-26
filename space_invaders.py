@@ -1,14 +1,18 @@
-# Space Invaders Clone
-# Created by Hlynur Stefánsson
-# Start date 23/05/2016
-# github.com/hlynurstef
-# hlynurstef@gmail.com
+##################################
+#      Space Invaders Clone	     #
+##################################
+# Created by Hlynur Stefánsson   #
+# github.com/hlynurstef			 #
+# hlynurstef@gmail.com			 #
+##################################
 
 import pygame
 import ctypes
 import game_functions as func
 from game_settings import Settings
 from player import Player
+from game_stats import GameStats
+from scoreboard import ScoreBoard
 from pygame.sprite import Group
 
 def run_game():
@@ -38,6 +42,12 @@ def run_game():
 	# Make player object.
 	player = Player(settings, screen)
 	
+	# Make GameStats object.
+	game_stats = GameStats()
+	
+	# Make ScoreBoard object.
+	scoreboard = ScoreBoard(settings, screen, player, game_stats)
+	
 	# Make player shot object Group.
 	player_shots = Group()
 	invader_shots = Group()
@@ -51,11 +61,13 @@ def run_game():
 	# Start the main loop for Space Invaders.
 	while True:
 		func.check_events(settings, screen, player, player_shots)
+		
 		player.update()
 		func.update_player_shots(settings, screen, player_shots, 
 			ground_blocks)
-		func.update_screen(settings, screen, player, player_shots, 
-			ground_blocks, remaining_lives)
+			
+		func.update_screen(settings, screen, scoreboard, player,
+			player_shots, ground_blocks, remaining_lives)
 		clock.tick(settings.fps)
 	
 run_game()

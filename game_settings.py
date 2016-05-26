@@ -30,9 +30,9 @@ class Settings():
 		
 		# Player settings
 		self.player_speed = 5
-		self.player_offsetx = 105
-		self.player_ship_image = pygame.transform.scale(
-			pygame.image.load("images/ships/player.png"), (39, 24))
+		self.player_offsetx = 106
+		self.player_ship_image = pygame.image.load(
+			"images/ships/player.png")
 		self.player_lives = 3
 		
 		# Shot settings
@@ -44,11 +44,17 @@ class Settings():
 		self.block_color = self.green
 		
 		# Ground settings
-		self.ground_height = self.screen_height - 55
+		self.ground_height = self.screen_height - 56
 		self.ground_offsetx = 50
 		
 		# Life settings
 		self.life_height = self.screen_height - 50
-		self.life_text_offsetx = 77
-		self.life_ship_offsetx = 132
+		self.life_text_offsetx = 78
+		self.life_ship_offsetx = 131
 		self.life_ship_spacing = 9
+		
+		# Score Settings
+		self.score_text_height = 26
+		self.score_height = 51
+		self.player1_score_x = 130
+		self.hi_score_x = 330

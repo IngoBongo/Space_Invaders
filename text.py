@@ -1,6 +1,6 @@
 import pygame
 
-class Text:
+class Text():
 	"""A class representing text."""
 	
 	def __init__(self, settings, screen, font_size, message, color,
