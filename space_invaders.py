@@ -1,9 +1,9 @@
 #================================#
 #      Space Invaders Clone	     #
 #================================#
-# Created by Hlynur Stefánsson   #
-# github.com/hlynurstef			 #
-# hlynurstef@gmail.com			 #
+#  Created by Hlynur Stefánsson  #
+#   ~ github.com/hlynurstef ~	 #
+#   ~ hlynurstef@gmail.com  ~	 #
 #================================#
 
 import pygame
@@ -55,6 +55,10 @@ def run_game():
 	# Make group for ground and initialise it.
 	ground_blocks = func.create_ground(settings, screen)
 	
+	# Make list of shield groups.
+	shields = [func.create_shield(settings, screen, number) 
+			   for number in range(4)]
+	
 	# Make group for lives and initialise it.
 	remaining_lives = func.create_lives(settings, screen, player)
 	
@@ -67,7 +71,7 @@ def run_game():
 			ground_blocks)
 			
 		func.update_screen(settings, screen, scoreboard, player,
-			player_shots, ground_blocks, remaining_lives)
+			player_shots, ground_blocks, remaining_lives, shields)
 		clock.tick(settings.fps)
 	
 run_game()

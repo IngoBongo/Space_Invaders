@@ -41,20 +41,42 @@ class Settings():
 		
 		# Block settings
 		self.block_size = 3
-		self.block_color = self.green
 		
 		# Ground settings
-		self.ground_height = self.screen_height - 56
+		self.ground_y = self.screen_height - 56
 		self.ground_offsetx = 50
 		
 		# Life settings
-		self.life_height = self.screen_height - 50
+		self.life_y = self.screen_height - 50
 		self.life_text_offsetx = 78
 		self.life_ship_offsetx = 131
 		self.life_ship_spacing = 9
 		
-		# Score Settings
-		self.score_text_height = 25
-		self.score_height = 50
+		# Score settings
+		self.score_text_y = 25
+		self.score_y = 50
 		self.player1_score_x = 128
 		self.hi_score_x = 330
+		
+		# Shield settings
+		self.shield_rows = 16
+		self.shield_columns = 22
+		# '.' == null
+		# 'b' == Block()
+		self.shield_array = [
+		['.', '.', '.', '.', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', '.', '.', '.', '.'],
+		['.', '.', '.', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', '.', '.', '.'],
+		['.', '.', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', '.', '.'],
+		['.', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', '.'],
+		['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', 'b', 'b', '.', '.', '.', '.', '.', '.', '.', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', 'b', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'b', 'b', 'b', 'b', 'b', 'b'],
+		['b', 'b', 'b', 'b', 'b', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.', 'b', 'b', 'b', 'b', 'b', 'b']]

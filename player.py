@@ -33,7 +33,7 @@ class Player(Sprite):
 		# Set boundaries.
 		self.left_boundary = settings.player_offsetx
 		self.right_boundary = (self.settings.screen_width - 
-			self.settings.player_offsetx)
+			128)
 		
 		# Players score.
 		self.score = 0

@@ -21,12 +21,12 @@ class ScoreBoard:
 		# Text for player 1 score, displayed at left side of screen.
 		self.player1_score_text = Text(self.settings, self.screen, 25, 
 			"S C O R E <  1  >", self.settings.white, 78, 
-			self.settings.score_text_height)
+			self.settings.score_text_y)
 			
 		# Text for hi-score, displayed in middle of screen.
 		self.hi_score_text = Text(self.settings, self.screen, 25, 
 			"H  I  - S C O R E", self.settings.white, 0, 
-			self.settings.score_text_height)
+			self.settings.score_text_y)
 		# Center hi-score text.
 		self.hi_score_text.set_rect_centerx(self.settings.screen_width / 2)
 		
@@ -34,7 +34,7 @@ class ScoreBoard:
 		self.player2_score_text = Text(self.settings, self.screen, 25, 
 			"S C O R E <  2 >", self.settings.white, 
 			self.settings.screen_width - self.player1_score_text.rect.right - 3,
-			self.settings.score_text_height)
+			self.settings.score_text_y)
 		
 	def prep_player1_score(self):
 		"""Create rendered image of score."""
@@ -46,7 +46,7 @@ class ScoreBoard:
 			score = ("0 " * (4 - len(score))) + score
 		self.score_image = Text(self.settings, self.screen, 25, score,
 			self.settings.white, self.settings.player1_score_x,
-			self.settings.score_height)
+			self.settings.score_y)
 		
 	def prep_hi_score(self):
 		"""Create rendered image of hi-score."""
@@ -58,7 +58,7 @@ class ScoreBoard:
 			hi_score = ("0 " * (4 - len(hi_score))) + hi_score
 		self.hi_score_image = Text(self.settings, self.screen, 25, hi_score,
 			self.settings.white, self.settings.hi_score_x,
-			self.settings.score_height)
+			self.settings.score_y)
 		
 	#def prep_player2_score(self):
 		# TODO: add player 2 score.
