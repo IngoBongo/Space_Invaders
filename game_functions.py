@@ -7,6 +7,7 @@ from player_shot import PlayerShot
 from block import Block
 from life import Life
 from text import Text
+from explosion import Explosion
 
 def check_events(settings, screen, player, player_shots):
 	"""Check for events and respond to them."""
@@ -65,6 +66,11 @@ def update_screen(settings, screen, scoreboard, player, player_shots,
 	# Draw shields.
 	for shield in shields:
 		shield.draw(screen)
+		
+	# Draw explosions.
+	for shot in player_shots:
+		if shot.exploded:
+			shot.explosion.image.draw(screen)
 	
 	# Make the most recently drawn screen visible.
 	pygame.display.update()
@@ -77,8 +83,10 @@ def player_shoot(settings, screen, player, player_shots):
 		player_shots.add(player_shot)
 		# Play shooting sound effect.
 		settings.player_shoot.play()
+		player.has_active_shot = True
 
-def update_player_shots(settings, screen, player_shots, ground_blocks):
+def update_player_shots(settings, screen, player, player_shots, 
+		ground_blocks, shields):
 	"""
 	Update position of player shots, explode shots that reach
 	a certain height and then remove them.
@@ -88,19 +96,33 @@ def update_player_shots(settings, screen, player_shots, ground_blocks):
 	
 	for shot in player_shots:
 		# Color shots above certain position.
-		if not shot.is_red and shot.rect.bottom < 140:
+		if not shot.is_red and shot.rect.bottom < 150:
 			color_surface(shot.image, settings.red)
 			shot.is_red = True
 		# Change sprite to exploded if at certain position.
-		if not shot.exploded and shot.rect.top < 82:
-			shot.shot_explode(82)
+		if not shot.exploded and shot.rect.top < 85:
+			shot.exploded = True
+			# Color shot black to hide it.
+			color_surface(shot.image, settings.black)
+			# Create explosion "image".
+			shot.explosion = Explosion(settings, screen, 
+				(shot.rect.centerx - 
+				int((settings.player_shot_explode_columns * 
+				settings.block_size) / 2)),
+				shot.rect.top)
+			# Color explosion red
+			for block in shot.explosion.image:
+				color_surface(block.image, settings.red)
 		currentTime = pygame.time.get_ticks()
 		# Show explosion for a little bit and then remove it.
-		if shot.exploded and currentTime - shot.timer > 300:
+		if shot.exploded and currentTime - shot.explosion.timer > 300:
 			player_shots.remove(shot)
+			player.has_active_shot = False
 	
 	check_shot_ground_collisions(settings, screen, player_shots, 
 		ground_blocks)
+	check_shot_shield_collisions(settings, screen, player_shots,
+		shields)
 
 def color_surface(surface, rgb_color):
 	"""Change color of surface to the value of rgb_color tuple."""
@@ -130,6 +152,21 @@ def check_shot_ground_collisions(settings, screen, player_shots,
 	# TODO: should be invader_shots, not player_shots... only put that
 	# like that for testing purposes.
 	
+def check_shot_shield_collisions(settings, screen, player_shots,
+		shields):
+	"""Respond to shot-shield collisions."""
+	for shield in shields:
+		collisions = pygame.sprite.groupcollide(player_shots, shield, False, False)
+		if collisions:
+			for shot in player_shots:
+				shot.explosion = Explosion(settings, screen, 
+					shot.rect.x - (settings.block_size * 3),
+					shot.rect.y - (settings.block_size * 6))
+				pygame.sprite.groupcollide(shot.explosion.image, shield, True, True)
+				shot.exploded = True
+				#player_shots.remove(shot)
+			#pygame.sprite.groupcollide(player_shots, shield, True, True)
+	
 def create_lives(settings, screen, player):
 	"""Create and return group of remaining lives."""
 	remaining_lives = Group()
@@ -156,7 +193,8 @@ def show_lives(settings, screen, player, remaining_lives):
 	lives_text.blitme()
 
 def create_shield(settings, screen, number):
-	shield_blocks = pygame.sprite.Group()
+	"""Create and return a group of blocks that make up a single shield."""
+	shield_blocks = Group()
 	
 	for row in range(settings.shield_rows):
 		for column in range(settings.shield_columns):

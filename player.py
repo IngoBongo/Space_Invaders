@@ -37,6 +37,9 @@ class Player(Sprite):
 		
 		# Players score.
 		self.score = 0
+		
+		# Active shot flag.
+		self.has_active_shot = False
 	
 	def blitme(self):
 		"""Draw the ship at its current location."""

@@ -20,3 +20,7 @@ class Block(Sprite):
 	def blitme(self):
 		"""Draw the block at its current location."""
 		self.screen.blit(self.image, self.rect)
+	
+	def update_position(self, x, y):
+		self.rect.x = x
+		self.rect.y = y

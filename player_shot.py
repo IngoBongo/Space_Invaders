@@ -1,6 +1,8 @@
 import pygame
 import time
 from pygame.sprite import Sprite
+from block import Block
+from pygame.sprite import Group
 
 class PlayerShot(Sprite):
 	"""A class representing a shot from the player."""
@@ -19,21 +21,16 @@ class PlayerShot(Sprite):
 		self.rect.centerx = player.rect.centerx
 		self.rect.top = player.rect.top
 		
-		# Load explode image.
-		self.explode = pygame.transform.scale(
-			pygame.image.load("images/explosions/ship_shot_explosion1.png"),
-			(24, 24))
+		# Blocks making up the explosion will be stored in this group.
+		self.explosion = Group()
 		
 		# Store a decimal value for the shot position.
 		self.y = float(self.rect.y)
 		self.center = float(player.rect.centerx)
 		
-		# Set exploded flag and color flag.
+		# Set exploded and color flag.
 		self.exploded = False
 		self.is_red = False
-		
-		# Set timer.
-		self.timer = pygame.time.get_ticks()
 		
 	def blitme(self):
 		"""Draw the PlayerShot at it's current location."""
@@ -46,20 +43,4 @@ class PlayerShot(Sprite):
 			self.y -= self.settings.playershot_speed
 			# Update the rect.
 			self.rect.y = self.y
-			self.center = self.rect.centerx
-			
-	def shot_explode(self, top):
-		"""Change shot image into explode image."""
-		# Change image.
-		self.image = self.explode
-		self.is_red = False
-		
-		# Get new rect.
-		self.rect = self.image.get_rect()
-		self.rect.centerx = self.center + 3
-		self.rect.y = top
-		
-		# set exploded flag to true and set time of explosion.
-		self.exploded = True
-		self.timer = pygame.time.get_ticks()
-		
+			self.center = self.rect.centerx		

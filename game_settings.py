@@ -1,4 +1,5 @@
 import pygame
+import game_functions as func
 
 class Settings():
 	"""A class to store all settings for Space Invaders."""
@@ -57,6 +58,19 @@ class Settings():
 		self.score_y = 50
 		self.player1_score_x = 128
 		self.hi_score_x = 330
+		
+		# Explosion settings
+		self.player_shot_explode_rows = 8
+		self.player_shot_explode_columns = 8
+		self.player_shot_explode_array = [
+			['b', '.', '.', '.', 'b', '.', '.', 'b'],
+			['.', '.', 'b', '.', '.', '.', 'b', '.'],
+			['.', 'b', 'b', 'b', 'b', 'b', 'b', '.'],
+			['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+			['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
+			['.', 'b', 'b', 'b', 'b', 'b', 'b', '.'],
+			['.', '.', 'b', '.', '.', 'b', '.', '.'],
+			['b', '.', '.', 'b', '.', '.', '.', 'b']]
 		
 		# Shield settings
 		self.shield_rows = 16

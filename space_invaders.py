@@ -67,8 +67,11 @@ def run_game():
 		func.check_events(settings, screen, player, player_shots)
 		
 		player.update()
-		func.update_player_shots(settings, screen, player_shots, 
-			ground_blocks)
+		
+		# Only update shot when there is an active shot.
+		if player.has_active_shot:
+			func.update_player_shots(settings, screen, player, player_shots, 
+				ground_blocks, shields)
 			
 		func.update_screen(settings, screen, scoreboard, player,
 			player_shots, ground_blocks, remaining_lives, shields)
