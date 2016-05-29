@@ -17,7 +17,7 @@ class Player(Sprite):
 		
 		# Set the players starting position.
 		self.rect.left = settings.player_offsetx
-		self.rect.bottom = self.screen_rect.bottom - 75
+		self.rect.y = settings.player_y
 		#self.rect.centery = self.screen_rect.centery
 		
 		# Store a decimal value for the ships center for fluid movement.
@@ -32,8 +32,7 @@ class Player(Sprite):
 		
 		# Set boundaries.
 		self.left_boundary = settings.player_offsetx
-		self.right_boundary = (self.settings.screen_width - 
-			128)
+		self.right_boundary = (settings.screen_width - 123)
 		
 		# Players score.
 		self.score = 0

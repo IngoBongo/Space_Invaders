@@ -155,6 +155,7 @@ def check_shot_ground_collisions(settings, screen, player_shots,
 def check_shot_shield_collisions(settings, screen, player_shots,
 		shields):
 	"""Respond to shot-shield collisions."""
+	# TODO: FIX SHOT_EXPLOSION-SHIELD COLLISION DETECTION
 	for shield in shields:
 		collisions = pygame.sprite.groupcollide(player_shots, shield, False, False)
 		if collisions:
@@ -168,16 +169,14 @@ def check_shot_shield_collisions(settings, screen, player_shots,
 			#pygame.sprite.groupcollide(player_shots, shield, True, True)
 	
 def create_lives(settings, screen, player):
-	"""Create and return group of remaining lives."""
+	"""Create and return group of sprites for remaining lives."""
 	remaining_lives = Group()
 	
 	for number in range(player.remaining_lives - 1):
 		# Create life and add it to remainin_lives.
-		new_life = Life(settings, screen)
-		new_life.rect.x = (settings.life_ship_offsetx + 
-			(settings.life_ship_spacing + new_life.rect.w) * number)
-		new_life.rect.y = settings.life_y
-		# TODO: place x and y varibles in __init__() of Life.
+		new_life = Life(settings, screen, 
+			(settings.life_ship_offsetx + (settings.life_ship_spacing + 
+			39) * number), settings.life_y)
 		remaining_lives.add(new_life)
 	
 	return remaining_lives
@@ -188,8 +187,9 @@ def show_lives(settings, screen, player, remaining_lives):
 	remaining_lives.draw(screen)
 	
 	# Render number of lives into image and draw it.
-	lives_text = Text(settings, screen, 25, str(player.remaining_lives),
-		settings.white, settings.life_text_offsetx, settings.life_y)
+	lives_text = Text(settings, screen, settings.font_size,
+		str(player.remaining_lives), settings.white, 
+		settings.life_text_offsetx, settings.life_y)
 	lives_text.blitme()
 
 def create_shield(settings, screen, number):
@@ -200,11 +200,8 @@ def create_shield(settings, screen, number):
 		for column in range(settings.shield_columns):
 			if settings.shield_array[row][column] == 'b':
 				new_block = Block(settings, screen, settings.green, 
-					150 + (139 * number + number) + (column * settings.block_size),
-					525 + (row * settings.block_size))
+					settings.shield_x + (132 * number + number * 3) + (column * settings.block_size),
+					settings.shield_y + (row * settings.block_size))
 				shield_blocks.add(new_block)
 
 	return shield_blocks
-
-
-

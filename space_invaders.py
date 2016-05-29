@@ -15,6 +15,8 @@ from game_stats import GameStats
 from scoreboard import ScoreBoard
 from pygame.sprite import Group
 
+# TODO: Create Game class here.
+
 def run_game():
 	"""Main function for Space Invaders."""
 	

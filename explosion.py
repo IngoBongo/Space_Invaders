@@ -6,7 +6,7 @@ from block import Block
 class Explosion(Sprite):
 	"""A class representing an explosion."""
 	
-	def __init__(self, settings, screen, x, y,):
+	def __init__(self, settings, screen, x, y):
 		super(Explosion, self).__init__()
 		self.settings = settings
 		self.screen = screen
