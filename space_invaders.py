@@ -1,10 +1,12 @@
-#================================#
-#      Space Invaders Clone	     #
-#================================#
-#  Created by Hlynur Stefánsson  #
-#   ~ github.com/hlynurstef ~	 #
-#   ~ hlynurstef@gmail.com  ~	 #
-#================================#
+#===================================#
+#       Space Invaders Clone	    #
+#      Based off of SNES game:		#
+# Space Invaders: The Original Game #
+#===================================#
+#    Created by Hlynur Stefánsson   #
+#     ~ github.com/hlynurstef ~	    #
+#     ~ hlynurstef@gmail.com  ~	    #
+#===================================#
 
 import pygame
 import ctypes
