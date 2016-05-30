@@ -99,6 +99,7 @@ def update_player_shots(settings, screen, player, player_shots,
 		if not shot.is_red and shot.rect.bottom < 150:
 			color_surface(shot.image, settings.red)
 			shot.is_red = True
+			
 		# Set shot to exploded if position is at top of screen.
 		if not shot.exploded and shot.rect.top < 97:
 			shot.explode(shot.rect.x - (settings.block_size * 3),
@@ -106,6 +107,7 @@ def update_player_shots(settings, screen, player, player_shots,
 			for block in shot.explosion.image:
 				color_surface(block.image, settings.red)
 		currentTime = pygame.time.get_ticks()
+		
 		# Show explosion for a little bit and then remove it.
 		if shot.exploded and currentTime - shot.explosion.timer > 300:
 			player_shots.remove(shot)

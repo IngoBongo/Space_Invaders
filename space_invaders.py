@@ -15,68 +15,83 @@ from game_stats import GameStats
 from scoreboard import ScoreBoard
 from pygame.sprite import Group
 
-# TODO: Create Game class here.
-
-def run_game():
-	"""Main function for Space Invaders."""
+class Game():
+	"""A class representing the game."""
 	
-	# Initialize game.
-	pygame.mixer.pre_init(44100, -16, 1, 512)
-	pygame.init()
-	settings = Settings()
-	
-	# Ensure correct screen size to be displayed.
-	ctypes.windll.user32.SetProcessDPIAware()
-	
-	# Set screensize and caption.
-	screen = pygame.display.set_mode((settings.screen_width, 
-		settings.screen_height))
-	pygame.display.set_caption(settings.caption)
-	
-	# Screen flags.
-	main_menu = True
-	play_game = False
-	# TODO: Implement Main Menu screen.
-	
-	# Make a clock object to set fps limit.	
-	clock = pygame.time.Clock()
-	
-	# Make player object.
-	player = Player(settings, screen)
-	
-	# Make GameStats object.
-	game_stats = GameStats()
-	
-	# Make ScoreBoard object.
-	scoreboard = ScoreBoard(settings, screen, player, game_stats)
-	
-	# Make player shot object Group.
-	player_shots = Group()
-	invader_shots = Group()
-	
-	# Make group for ground and initialise it.
-	ground_blocks = func.create_ground(settings, screen)
-	
-	# Make list of shield groups.
-	shields = [func.create_shield(settings, screen, number) 
-			   for number in range(4)]
-	
-	# Make group for lives and initialise it.
-	remaining_lives = func.create_lives(settings, screen, player)
-	
-	# Start the main loop for Space Invaders.
-	while True:
-		func.check_events(settings, screen, player, player_shots)
+	def __init__(self):
+		"""Initialize game."""
+		pygame.mixer.pre_init(44100, -16, 1, 512)
+		pygame.init()
 		
-		player.update()
+		# Ensure correct screen size to be displayed.
+		ctypes.windll.user32.SetProcessDPIAware()
 		
-		# Only update shot when there is an active shot.
-		if player.has_active_shot:
-			func.update_player_shots(settings, screen, player, player_shots, 
-				ground_blocks, shields)
+		# Make settings object.
+		self.settings = Settings()
+		
+		# Set screensize and caption.
+		self.screen = pygame.display.set_mode((
+			self.settings.screen_width, 
+			self.settings.screen_height))
+		pygame.display.set_caption(self.settings.caption)
+		
+		# Screen flags.
+		self.main_menu = True
+		self.play_game = False
+		# TODO: Implement Main Menu screen.
+		
+		# Make a clock object to set fps limit.	
+		self.clock = pygame.time.Clock()
+		
+		# Make player object.
+		self.player = Player(self.settings, self.screen)
+		
+		# Make GameStats object.
+		self.game_stats = GameStats()
+		
+		# Make ScoreBoard object.
+		self.scoreboard = ScoreBoard(self.settings, self.screen, 
+			self.player, self.game_stats)
+		
+		# Make player shot object Group.
+		self.player_shots = Group()
+		self.invader_shots = Group()
+		
+		# Make group for ground and initialise it.
+		self.ground_blocks = func.create_ground(self.settings, 
+			self.screen)
+		
+		# Make list of shield groups.
+		self.shields = [func.create_shield(self.settings, self.screen, 
+			number) 
+			for number in range(4)]
+		
+		# Make group for lives and initialise it.
+		self.remaining_lives = func.create_lives(self.settings, 
+			self.screen, self.player)
+		
+	def run_game(self):
+		"""Main function for Space Invaders."""
+		
+		# Start the main loop for Space Invaders.
+		while True:
+			func.check_events(self.settings, self.screen, self.player, 
+				self.player_shots)
 			
-		func.update_screen(settings, screen, scoreboard, player,
-			player_shots, ground_blocks, remaining_lives, shields)
-		clock.tick(settings.fps)
-	
-run_game()
+			self.player.update()
+			
+			# Only update shot when there is a shot on the screen.
+			if self.player.has_active_shot:
+				func.update_player_shots(self.settings, self.screen, 
+					self.player, self.player_shots, self.ground_blocks,
+					self.shields)
+				
+			func.update_screen(self.settings, self.screen, 
+				self.scoreboard, self.player, self.player_shots, 
+				self.ground_blocks, self.remaining_lives, self.shields)
+			
+			# Set max fps.
+			self.clock.tick(self.settings.fps)
+
+if __name__ == '__main__':
+	Game().run_game()
