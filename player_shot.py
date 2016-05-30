@@ -1,8 +1,10 @@
 import pygame
 import time
 from pygame.sprite import Sprite
-from block import Block
 from pygame.sprite import Group
+from block import Block
+from explosion import Explosion
+import game_functions as func
 
 class PlayerShot(Sprite):
 	"""A class representing a shot from the player."""
@@ -43,4 +45,13 @@ class PlayerShot(Sprite):
 			self.y -= self.settings.playershot_speed
 			# Update the rect.
 			self.rect.y = self.y
-			self.center = self.rect.centerx		
+			self.center = self.rect.centerx
+	
+	def explode(self, x, y):
+		"""Set shot to exploded state."""
+		self.exploded = True
+		# Color shot black to hide it.
+		func.color_surface(self.image, self.settings.black)
+		# Create explosion "image".
+		self.explosion = Explosion(self.settings, self.screen, x, y)
+		# Color explosion.

@@ -99,16 +99,10 @@ def update_player_shots(settings, screen, player, player_shots,
 		if not shot.is_red and shot.rect.bottom < 150:
 			color_surface(shot.image, settings.red)
 			shot.is_red = True
-		# Change sprite to exploded if position is at top of screen.
+		# Set shot to exploded if position is at top of screen.
 		if not shot.exploded and shot.rect.top < 97:
-			shot.exploded = True
-			# Color shot black to hide it.
-			color_surface(shot.image, settings.black)
-			# Create explosion "image".
-			shot.explosion = Explosion(settings, screen, 
-				shot.rect.x - (settings.block_size * 3),
+			shot.explode(shot.rect.x - (settings.block_size * 3),
 				shot.rect.y - (settings.block_size * 6))
-			# Color explosion red
 			for block in shot.explosion.image:
 				color_surface(block.image, settings.red)
 		currentTime = pygame.time.get_ticks()
@@ -146,26 +140,42 @@ def create_ground(settings, screen):
 def check_shot_ground_collisions(settings, screen, player_shots, 
 		ground_blocks):
 	"""Respond to shot-ground collisions."""
-	collisions = pygame.sprite.groupcollide(player_shots, ground_blocks, False, True)
+	collisions = pygame.sprite.groupcollide(player_shots, ground_blocks,
+		False, True)
 	# TODO: should be invader_shots, not player_shots... only put that
 	# like that for testing purposes.
 	
-def check_shot_shield_collisions(settings, screen, player_shots,
+def check_shot_shield_collisions(settings, screen, player_shots, 
 		shields):
 	"""Respond to shot-shield collisions."""
-	# TODO: FIX SHOT_EXPLOSION-SHIELD COLLISION DETECTION
-	for shield in shields:
-		collisions = pygame.sprite.groupcollide(player_shots, shield, False, False)
-		if collisions:
-			for shot in player_shots:
-				shot.explosion = Explosion(settings, screen, 
-					shot.rect.x - (settings.block_size * 3),
-					shot.rect.y - (settings.block_size * 6))
-				pygame.sprite.groupcollide(shot.explosion.image, shield, True, True)
-				shot.exploded = True
-				#player_shots.remove(shot)
-			#pygame.sprite.groupcollide(player_shots, shield, True, True)
 	
+	for shield in shields:
+		collisions = pygame.sprite.groupcollide(player_shots, shield, 
+			False, False)
+		
+		# If there were collisions find lowest block 
+		# that collided with shot.
+		if collisions:
+			
+			# Set all blocks from the dictionary into a list.
+			collision_blocks = []
+			for shot, block_list in collisions.items():
+				for block in block_list:
+					collision_blocks.append(block)
+			
+			# Sort collided blocks ascending by rect.y value and then
+			# get the block with the highest y value.
+			collision_blocks.sort(key=lambda x: x.rect.y)
+			first_block = collision_blocks[-1]
+			
+			# Set shot to exploded, color it and remove collided blocks.
+			for shot in player_shots:
+				shot.explode(first_block.rect.x - (settings.block_size * 3),
+					first_block.rect.y - (settings.block_size * 5))
+				for block in shot.explosion.image:
+					color_surface(block.image, settings.green)
+				pygame.sprite.groupcollide(shot.explosion.image, shield, False, True)
+
 def create_lives(settings, screen, player):
 	"""Create and return group of sprites for remaining lives."""
 	remaining_lives = Group()
