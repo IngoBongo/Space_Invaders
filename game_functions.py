@@ -99,17 +99,15 @@ def update_player_shots(settings, screen, player, player_shots,
 		if not shot.is_red and shot.rect.bottom < 150:
 			color_surface(shot.image, settings.red)
 			shot.is_red = True
-		# Change sprite to exploded if at certain position.
-		if not shot.exploded and shot.rect.top < 85:
+		# Change sprite to exploded if position is at top of screen.
+		if not shot.exploded and shot.rect.top < 97:
 			shot.exploded = True
 			# Color shot black to hide it.
 			color_surface(shot.image, settings.black)
 			# Create explosion "image".
 			shot.explosion = Explosion(settings, screen, 
-				(shot.rect.centerx - 
-				int((settings.player_shot_explode_columns * 
-				settings.block_size) / 2)),
-				shot.rect.top)
+				shot.rect.x - (settings.block_size * 3),
+				shot.rect.y - (settings.block_size * 6))
 			# Color explosion red
 			for block in shot.explosion.image:
 				color_surface(block.image, settings.red)
