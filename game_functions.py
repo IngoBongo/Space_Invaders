@@ -8,6 +8,7 @@ from block import Block
 from life import Life
 from text import Text
 from explosion import Explosion
+from invader import Invader
 
 def check_events(settings, screen, player, player_shots):
 	"""Check for events and respond to them."""
@@ -47,7 +48,7 @@ def check_keyup_events(event, player):
 		player.moving_left = False
 
 def update_screen(settings, screen, scoreboard, player, player_shots,
-		ground_blocks, remaining_lives, shields):
+		ground_blocks, remaining_lives, shields, invaders):
 	"""Update every image on the screen then draw the screen."""
 	# Set the background color.
 	screen.fill(settings.black)
@@ -57,6 +58,9 @@ def update_screen(settings, screen, scoreboard, player, player_shots,
 	
 	# Draw the player ship.
 	player.blitme()
+	
+	# Draw the fleet.
+	invaders.draw(screen)
 	
 	# Draw ground, scoreboard and lives.
 	ground_blocks.draw(screen)
@@ -86,7 +90,7 @@ def player_shoot(settings, screen, player, player_shots):
 		player.has_active_shot = True
 
 def update_player_shots(settings, screen, player, player_shots, 
-		ground_blocks, shields):
+		ground_blocks, shields, invaders):
 	"""
 	Update position of player shots, explode shots that reach
 	a certain height and then remove them.
@@ -95,7 +99,7 @@ def update_player_shots(settings, screen, player, player_shots,
 	player_shots.update()
 	
 	for shot in player_shots:
-		# Color shots above certain position.
+		# Color shots above certain position and only color them once.
 		if not shot.is_red and shot.rect.bottom < 150:
 			color_surface(shot.image, settings.red)
 			shot.is_red = True
@@ -106,10 +110,10 @@ def update_player_shots(settings, screen, player, player_shots,
 				shot.rect.y - (settings.block_size * 6))
 			for block in shot.explosion.image:
 				color_surface(block.image, settings.red)
-		currentTime = pygame.time.get_ticks()
+		current_time = pygame.time.get_ticks()
 		
 		# Show explosion for a little bit and then remove it.
-		if shot.exploded and currentTime - shot.explosion.timer > 300:
+		if shot.exploded and current_time - shot.explosion.timer > 300:
 			player_shots.remove(shot)
 			player.has_active_shot = False
 	
@@ -117,6 +121,8 @@ def update_player_shots(settings, screen, player, player_shots,
 		ground_blocks)
 	check_shot_shield_collisions(settings, screen, player_shots,
 		shields)
+	check_shot_alien_collisions(settings, screen, player_shots,
+		invaders)
 
 def color_surface(surface, rgb_color):
 	"""Change color of surface to the value of rgb_color tuple."""
@@ -138,6 +144,20 @@ def create_ground(settings, screen):
 		ground_blocks.add(block)
 	
 	return ground_blocks
+	
+def check_shot_alien_collisions(settings, screen, player_shots,
+		invaders):
+	"""Respond to shot-invader collisions."""
+	# Remove player_shot when colliding.
+	collisions = pygame.sprite.groupcollide(player_shots, invaders,
+		True, False)
+	
+	# Create explosion for killed invader.
+	if collisions:
+		for shot, invaders in collisions.items():
+			for invader in invaders:
+				invader.explode(invader.rect.x - 3, invader.rect.y)
+				settings.invader_killed.play()
 	
 def check_shot_ground_collisions(settings, screen, player_shots, 
 		ground_blocks):
@@ -215,3 +235,69 @@ def create_shield(settings, screen, number):
 				shield_blocks.add(new_block)
 
 	return shield_blocks
+
+def create_fleet(settings, screen, invaders):
+	"""Create a full fleet of invaders."""
+	# Create the fleet of aliens.
+	for row in range(settings.fleet_rows):
+		for column in range(settings.fleet_columns):
+			# Create an alien and place it in the fleet.
+			if row == 0:
+				offset, gap, length = 6, 24, 24
+			elif row == 1 or row == 2:
+				offset, gap, length = 0, 15, 33
+			else:
+				offset, gap, length = 0, 12, 36
+				
+			new_invader = Invader(settings, screen, row,
+				settings.invader_start_x + offset + (column * (gap + length)),
+				settings.invader_start_y + (row * (settings.invader_height * 2)))
+			invaders.add(new_invader)
+
+def update_invaders(settings, invaders):
+	check_fleet_boundary(settings, invaders)
+	current_time = pygame.time.get_ticks()
+	for invader in invaders.sprites():
+		invader.update(current_time)
+		
+		# Show explosion for a little bit and then remove it.
+		if invader.exploded and current_time - invader.time_of_last_move > 300:
+			invaders.remove(invader)
+
+def entire_fleet_has_moved(invaders):
+	"""Return True if entire fleet has moved."""
+	
+	# Count how many invaders have moved.
+	count = 0
+	for invader in invaders.sprites():
+		if invader.has_moved == True:
+			count += 1
+	
+	# Check if every invader has moved.
+	if count == len(invaders.sprites()):
+		for invader in invaders.sprites():
+			# Set every invader back to not moved.
+			invader.has_moved = False
+		return True
+	
+def check_fleet_boundary(settings, invaders):
+	"""
+	Check if any invader is at edge of boundary, 
+	change direction if so.
+	"""
+	boundary_reached = False
+	for invader in invaders.sprites():
+		if invader.is_at_boundary():
+			boundary_reached = True
+			break
+	
+	if entire_fleet_has_moved(invaders) and boundary_reached:
+		change_fleet_direction(settings, invaders)
+
+def change_fleet_direction(settings, invaders):
+	"""Moves invaders down and changes fleet direction."""
+	settings.fleet_direction *= -1
+	
+	for invader in invaders.sprites():
+		invader.rect.y += settings.invader_height
+		invader.rect.x += settings.invader_move_x * settings.fleet_direction

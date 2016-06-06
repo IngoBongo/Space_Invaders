@@ -53,5 +53,5 @@ class PlayerShot(Sprite):
 		# Color shot black to hide it.
 		func.color_surface(self.image, self.settings.black)
 		# Create explosion "image".
-		self.explosion = Explosion(self.settings, self.screen, x, y)
-		# Color explosion.
+		self.explosion = Explosion(self.settings, self.screen, x, y,
+			True, False, False, False, False)

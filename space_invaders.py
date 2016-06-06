@@ -48,6 +48,10 @@ class Game():
 		# Make player object.
 		self.player = Player(self.settings, self.screen)
 		
+		# Make Invader Fleet.
+		self.invaders = Group()
+		func.create_fleet(self.settings, self.screen, self.invaders)
+		
 		# Make GameStats object.
 		self.game_stats = GameStats()
 		
@@ -86,11 +90,14 @@ class Game():
 			if self.player.has_active_shot:
 				func.update_player_shots(self.settings, self.screen, 
 					self.player, self.player_shots, self.ground_blocks,
-					self.shields)
+					self.shields, self.invaders)
+					
+			func.update_invaders(self.settings, self.invaders)
 				
 			func.update_screen(self.settings, self.screen, 
 				self.scoreboard, self.player, self.player_shots, 
-				self.ground_blocks, self.remaining_lives, self.shields)
+				self.ground_blocks, self.remaining_lives, self.shields,
+				self.invaders)
 			
 			# Set max fps.
 			self.clock.tick(self.settings.fps)

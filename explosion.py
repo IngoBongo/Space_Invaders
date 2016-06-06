@@ -6,17 +6,28 @@ from block import Block
 class Explosion(Sprite):
 	"""A class representing an explosion."""
 	
-	def __init__(self, settings, screen, x, y):
+	def __init__(self, settings, screen, x, y, ship_shot, invader_shot, 
+			ship, invader, mystery):
 		super(Explosion, self).__init__()
 		self.settings = settings
 		self.screen = screen
+		self.x = x
+		self.y = y
 		
-		self.image = self.create_ship_shot_explosion(settings, screen, x, y)
+		self.set_image(ship_shot, invader_shot, ship, invader, mystery)
 		
 		# Set time of explosion
 		self.timer = pygame.time.get_ticks()
 		
 		# TODO: create other kinds of explosions
+	
+	def set_image(self, ship_shot, invader_shot, ship, invader, mystery):
+		if ship_shot:
+			self.image = self.create_ship_shot_explosion(self.settings, 
+				self.screen, self.x, self.y)
+		elif invader:
+			self.image = pygame.image.load(
+				"images/explosions/invader_explosion.png")
 
 	def create_ship_shot_explosion(self, settings, screen, x, y):
 		"""

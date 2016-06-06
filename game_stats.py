@@ -8,6 +8,6 @@ class GameStats():
 	def reset_game_stats(self):
 		"""
 		Reset every game stat that should be reset
-		at the start of a new game.
+		at the start of a new game/level.
 		"""
 		self.level = 1
