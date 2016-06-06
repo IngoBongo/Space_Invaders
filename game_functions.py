@@ -145,6 +145,11 @@ def create_ground(settings, screen):
 	
 	return ground_blocks
 	
+def check_invader_shield_collisions(settings, screen, invaders, shields):
+	"""Respond to invader-shield collisions."""
+	for shield in shields:
+		pygame.sprite.groupcollide(invaders, shield, False, True)
+	
 def check_shot_alien_collisions(settings, screen, player_shots,
 		invaders):
 	"""Respond to shot-invader collisions."""
@@ -254,7 +259,7 @@ def create_fleet(settings, screen, invaders):
 				settings.invader_start_y + (row * (settings.invader_height * 2)))
 			invaders.add(new_invader)
 
-def update_invaders(settings, invaders):
+def update_invaders(settings, screen, invaders, shields):
 	check_fleet_boundary(settings, invaders)
 	current_time = pygame.time.get_ticks()
 	for invader in invaders.sprites():
@@ -263,6 +268,8 @@ def update_invaders(settings, invaders):
 		# Show explosion for a little bit and then remove it.
 		if invader.exploded and current_time - invader.time_of_last_move > 300:
 			invaders.remove(invader)
+	
+	check_invader_shield_collisions(settings, screen, invaders, shields)
 
 def entire_fleet_has_moved(invaders):
 	"""Return True if entire fleet has moved."""
