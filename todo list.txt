@@ -1,0 +1,41 @@
+---------------------------------------------------------
+Unfinished:
+---------------------------------------------------------
+
+# INVADERS #
+	* Invaders start one row lower on new level
+	* After X levels Invaders start at original row again
+	* Increase Invader speed as invader count decreases
+	* Invaders are able to shoot back randomly
+	* Invaders turn green when reaching blockers
+	* Implement Invader music
+
+# GAME SCREENS #
+	* Implement Main Menu screen
+	* Implement Game Over screen
+
+# PLAYER #
+	* Player is able to be killed and lose a life
+	* Game is over when Player has no more lives
+
+# SCORE #
+	* Implement score count
+
+# MOTHERSHIP #
+	* Mothership cruises by randomly
+	* Mothership is able to shoot down randomly
+
+# GAME FUNCTIONS #
+	* Start next level when all Invaders are dead
+	* Fix lag at start of game
+	* Add Two Player mode
+
+---------------------------------------------------------
+In Progress:
+---------------------------------------------------------
+
+
+---------------------------------------------------------
+Completed:
+---------------------------------------------------------
+
