@@ -2,7 +2,7 @@ import pygame
 
 class Text():
 	"""A class representing text."""
-	
+
 	def __init__(self, settings, screen, font_size, message, color,
 			x_pos, y_pos):
 		"""Initialize text."""
@@ -13,7 +13,7 @@ class Text():
 		self.rect = self.image.get_rect()
 		self.rect.x = x_pos
 		self.rect.y = y_pos
-		
+
 	def blitme(self):
 		"""Draw the text at its current position."""
 		self.screen.blit(self.image, self.rect)
