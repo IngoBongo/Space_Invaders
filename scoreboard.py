@@ -47,7 +47,7 @@ class ScoreBoard:
 	def prep_player1_score(self):
 		"""Create rendered image of score."""
 		# Add space between each character and add extra space after each occurrence of '1'.
-		score = " ".join(str(self.player.score)).replace("1", "1 ")
+		score = " ".join(str(self.player.score)).replace("1", " 1")
 		num_length = len(str(self.player.score))
 
 		if num_length < 4:
@@ -60,7 +60,7 @@ class ScoreBoard:
 	def prep_hi_score(self):
 		"""Create rendered image of hi-score."""
 		# Add space between each character and add extra space after each occurrence of '1'.
-		hi_score = " ".join(str(self.game_stats.hi_score)).replace("1", "1 ")
+		hi_score = " ".join(str(self.game_stats.hi_score)).replace("1", " 1")
 		num_length = len(str(self.game_stats.hi_score))
 
 		if num_length < 4:
