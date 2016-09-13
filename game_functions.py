@@ -179,7 +179,8 @@ def update_score(settings, game_stats, invader, player):
 		player.score = (player.score + settings.invader_2_score) % 10000
 	else:
 		player.score = (player.score + settings.invader_3_score) % 10000
-
+	if player.score > game_stats.hi_score:
+		game_stats.hi_score = player.score
 
 def check_shot_ground_collisions(settings, screen, player_shots,
 								 ground_blocks):

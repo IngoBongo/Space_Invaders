@@ -56,9 +56,10 @@ class ScoreBoard:
 		# Only show 4 digits for score, Example: 12345 would be 2345.
 		# Then add space between each character.
 		score = " ".join(str(self.player.score % 10000)).replace("1", "1 ")
+		num_length = len(str(self.player.score))
 
-		if len(score) < 7:
-			score = ("0 " * (4 - len(str(self.player.score)))) + score
+		if num_length < 4:
+			score = ("0 " * (4 - num_length)) + score
 
 		# Create score image.
 		self.score_image = Text(self.settings, self.screen, 24, score,
@@ -67,12 +68,13 @@ class ScoreBoard:
 
 	def prep_hi_score(self):
 		"""Create rendered image of hi-score."""
-		# Only show 4 digits for score,
-		# Example: 12345 would be 2345.
+		# Only show 4 digits for score, Example: 12345 would be 2345.
 		# Then add space between each character
-		hi_score = " ".join(str(self.game_stats.hi_score % 10000))
-		if len(hi_score) < 4:
-			hi_score = ("0 " * (4 - len(hi_score))) + hi_score
+		hi_score = " ".join(str(self.game_stats.hi_score % 10000)).replace("1", "1 ")
+		num_length = len(str(self.game_stats.hi_score))
+
+		if num_length < 4:
+			hi_score = ("0 " * (4 - num_length)) + hi_score
 		self.hi_score_image = Text(self.settings, self.screen, 24,
 			hi_score, self.settings.white, self.settings.hi_score_x,
 			self.settings.score_y)
@@ -99,6 +101,7 @@ class ScoreBoard:
 
 		# Draw score.
 		self.prep_player1_score()
+		self.prep_hi_score()
 		self.score_image.blitme()
 		self.hi_score_image.blitme()
 
