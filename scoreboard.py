@@ -55,11 +55,10 @@ class ScoreBoard:
 		"""Create rendered image of score."""
 		# Only show 4 digits for score, Example: 12345 would be 2345.
 		# Then add space between each character.
-		score = " ".join(str(self.player.score % 10000))
+		score = " ".join(str(self.player.score % 10000)).replace("1", "1 ")
 
-		#print("LEN SCORE: ", ("0 " * (3 - int(len(score) - len(score)/2))))
 		if len(score) < 7:
-			score = ("0 " * (3 - int(len(score) - len(score)/2))) + score
+			score = ("0 " * (4 - len(str(self.player.score)))) + score
 
 		# Create score image.
 		self.score_image = Text(self.settings, self.screen, 24, score,

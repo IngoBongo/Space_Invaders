@@ -94,8 +94,7 @@ def player_shoot(settings, screen, player, player_shots):
 		player.has_active_shot = True
 
 
-def update_player_shots(settings, screen, player, player_shots,
-						ground_blocks, shields, invaders):
+def update_player_shots(settings, screen, game_stats, player, player_shots, ground_blocks, shields, invaders):
 	"""
 	Update position of player shots, explode shots that reach
 	a certain height and then remove them.
@@ -126,8 +125,7 @@ def update_player_shots(settings, screen, player, player_shots,
 								 ground_blocks)
 	check_shot_shield_collisions(settings, screen, player_shots,
 								 shields)
-	check_shot_alien_collisions(settings, screen, player_shots,
-								invaders, player)
+	check_shot_alien_collisions(settings, screen, game_stats, player_shots, invaders, player)
 
 
 def color_surface(surface, rgb_color):
@@ -159,8 +157,7 @@ def check_invader_shield_collisions(settings, screen, invaders, shields):
 		pygame.sprite.groupcollide(invaders, shield, False, True)
 
 
-def check_shot_alien_collisions(settings, screen, player_shots,
-								invaders, player):
+def check_shot_alien_collisions(settings, screen, game_stats, player_shots, invaders, player):
 	"""Respond to shot-invader collisions."""
 	# Remove player_shot when colliding.
 	collisions = pygame.sprite.groupcollide(player_shots, invaders,
@@ -172,14 +169,16 @@ def check_shot_alien_collisions(settings, screen, player_shots,
 			for invader in invaders:
 				invader.explode(invader.rect.x - 3, invader.rect.y)
 				settings.invader_killed.play()
-				if invader.row == 0:
-					player.score += settings.invader_1_score
-				elif invader.row == 1 or invader.row == 2:
-					player.score += settings.invader_2_score
-				else:
-					player.score += settings.invader_3_score
+				update_score(settings, game_stats, invader, player)
 
 
+def update_score(settings, game_stats, invader, player):
+	if invader.row == 0:
+		player.score = (player.score + settings.invader_1_score) % 10000
+	elif invader.row == 1 or invader.row == 2:
+		player.score = (player.score + settings.invader_2_score) % 10000
+	else:
+		player.score = (player.score + settings.invader_3_score) % 10000
 
 
 def check_shot_ground_collisions(settings, screen, player_shots,

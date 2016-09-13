@@ -89,9 +89,8 @@ class Game():
 
             # Only update shot when there is a shot on the screen.
             if self.player.has_active_shot:
-                func.update_player_shots(self.settings, self.screen,
-                                         self.player, self.player_shots, self.ground_blocks,
-                                         self.shields, self.invaders)
+                func.update_player_shots(self.settings, self.screen, self.game_stats, self.player, self.player_shots,
+                                         self.ground_blocks, self.shields, self.invaders)
 
             func.update_invaders(self.settings, self.screen,
                                  self.invaders, self.shields)
