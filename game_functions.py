@@ -264,9 +264,9 @@ def create_fleet(settings, screen, invaders):
 			else:
 				offset, gap, length = 0, 12, 36
 
-			new_invader = Invader(settings, screen, row,
-								  settings.invader_start_x + offset + (column * (gap + length)),
-								  settings.invader_start_y + (row * (settings.invader_height * 2)))
+			new_invader = Invader(settings, screen, row, column)
+			new_invader.rect.x = settings.invader_start_x + offset + (column * (gap + length))
+			new_invader.rect.y = settings.invader_start_y + (row * (settings.invader_height * 2))
 			invaders.add(new_invader)
 
 

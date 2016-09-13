@@ -5,12 +5,13 @@ from pygame.sprite import Sprite
 class Invader(Sprite):
 	"""A class representing a single Invader."""
 	
-	def __init__(self, settings, screen, row, x, y):
+	def __init__(self, settings, screen, row, column):
 		"""Initialize the Invader."""
 		super(Invader, self).__init__()
 		self.settings = settings
 		self.screen = screen
 		self.row = row
+		self.column = column
 		
 		# Set direction to start moving right, 1 == right, -1 == left.
 		self.direction = 1
@@ -21,8 +22,8 @@ class Invader(Sprite):
 		self.image_index = 0
 		self.image = self.images[self.image_index]
 		self.rect = self.image.get_rect()
-		self.rect.x = x
-		self.rect.y = y
+		# self.rect.x = x
+		# self.rect.y = y
 		
 		# Set time of last time invader moved/time of instantiation.
 		self.time_of_last_move = pygame.time.get_ticks()
