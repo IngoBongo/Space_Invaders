@@ -8,6 +8,7 @@ from invader import Invader
 from life import Life
 from player_shot import PlayerShot
 from text import Text
+from random import randint
 
 
 def check_events(settings, screen, player, player_shots):
@@ -319,3 +320,29 @@ def change_fleet_direction(settings, invaders):
 	for invader in invaders.sprites():
 		invader.rect.y += settings.invader_height
 		invader.rect.x += settings.invader_move_x * settings.fleet_direction
+
+
+def find_invader_shooter(invaders):
+	column_set = set()
+
+	# Create set of columns available
+	for invader in invaders:
+		column_set.add(invader.column)
+
+	# Select one column at random
+	col = column_set[randint(0, len(column_set+1))]
+
+	# Select lowest invader in column as shooter
+	row_invaders = []
+	for invader in invaders:
+		if invader.column == col:
+			row_invaders.append(invader)
+	shooter = max(row_invaders)
+	return shooter
+
+
+def invader_shoot(settings, screen, shooter, invader_shots):
+	if len(invader_shots) < settings.invadershot_limit:
+		# TODO: Create InvaderShot class
+		invader_shot = InvaderShot(settings, screen, shooter)
+		invader_shots.add(invader_shot)

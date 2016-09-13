@@ -61,6 +61,7 @@ class Settings():
 		# Shot settings
 		self.playershot_speed = 12
 		self.playershot_limit = 1
+		self.invadershot_limit = 3
 		
 		# Ground settings
 		self.ground_y       = self.screen_height - 54
