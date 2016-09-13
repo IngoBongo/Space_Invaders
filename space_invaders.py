@@ -104,7 +104,7 @@ class Game():
             self.clock.tick(self.settings.fps)
 
             # Prints fps to console for debugging reasons
-            print("FPS:", self.clock.get_fps())
+            #print("FPS:", self.clock.get_fps())
 
 if __name__ == '__main__':
     Game().run_game()

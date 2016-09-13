@@ -49,6 +49,9 @@ class Settings():
 		self.invader_left_boundary 	= 72
 		self.invader_right_boundary = 690
 		self.invader_move_time		= 1000
+		self.invader_1_score		= 30
+		self.invader_2_score		= 20
+		self.invader_3_score		= 10
 		
 		# Fleet settings
 		self.fleet_rows      = 5

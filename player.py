@@ -35,7 +35,7 @@ class Player(Sprite):
 		self.right_boundary = (settings.screen_width - 123)
 		
 		# Players score.
-		self.score = 9999
+		self.score = 0
 		
 		# Active shot flag.
 		self.has_active_shot = False

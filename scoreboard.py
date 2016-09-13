@@ -57,7 +57,7 @@ class ScoreBoard:
 		# Then add space between each character.
 		score = " ".join(str(self.player.score % 10000))
 
-		print("LEN SCORE: ", ("0 " * (3 - int(len(score) - len(score)/2))))
+		#print("LEN SCORE: ", ("0 " * (3 - int(len(score) - len(score)/2))))
 		if len(score) < 7:
 			score = ("0 " * (3 - int(len(score) - len(score)/2))) + score
 

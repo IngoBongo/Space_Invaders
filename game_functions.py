@@ -172,7 +172,13 @@ def check_shot_alien_collisions(settings, screen, player_shots,
 			for invader in invaders:
 				invader.explode(invader.rect.x - 3, invader.rect.y)
 				settings.invader_killed.play()
-				player.score += 10
+				if invader.row == 0:
+					player.score += settings.invader_1_score
+				elif invader.row == 1 or invader.row == 2:
+					player.score += settings.invader_2_score
+				else:
+					player.score += settings.invader_3_score
+
 
 
 
