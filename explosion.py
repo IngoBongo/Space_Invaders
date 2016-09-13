@@ -25,17 +25,34 @@ class Explosion(Sprite):
 		if ship_shot:
 			self.image = self.create_ship_shot_explosion(self.settings, 
 				self.screen, self.x, self.y)
+		elif invader_shot:
+			self.image = self.create_invader_shot_explosion(self.settings,
+			    self.screen, self.x, self.y)
 		elif invader:
 			self.image = pygame.image.load("images/explosions/invader_explosion.png")
 
 	def create_ship_shot_explosion(self, settings, screen, x, y):
-		"""Create and return explosion "sprite" as a group of Blocks. Top-left point of group is set to x, y. """
+		"""Create and return explosion "sprite" as a group of Blocks. Top-left point of group is set to x, y."""
 		explode_blocks = Group()
 		
 		for row in range(settings.player_shot_explode_rows):
 			for column in range(settings.player_shot_explode_columns):
 				if settings.player_shot_explode_array[row][column] == 'b':
 					new_block = Block(settings, screen, settings.white, 
+						x + (column * settings.block_size),
+						y + (row * settings.block_size))
+					explode_blocks.add(new_block)
+
+		return explode_blocks
+
+	def create_invader_shot_explosion(self, settings, screen, x, y):
+		"""Create and return explosion "sprite" as a group of Blocks. Top-left point of group is set to x, y."""
+		explode_blocks = Group()
+
+		for row in range(settings.invader_shot_explode_rows):
+			for column in range(settings.invader_shot_explode_columns):
+				if settings.invader_shot_explode_array[row][column] == 'b':
+					new_block = Block(settings, screen, settings.white,
 						x + (column * settings.block_size),
 						y + (row * settings.block_size))
 					explode_blocks.add(new_block)

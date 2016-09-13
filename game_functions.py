@@ -7,6 +7,7 @@ from block import Block
 from invader import Invader
 from life import Life
 from player_shot import PlayerShot
+from invader_shot import InvaderShot
 from text import Text
 from random import randint
 
