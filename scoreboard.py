@@ -53,12 +53,15 @@ class ScoreBoard:
 
 	def prep_player1_score(self):
 		"""Create rendered image of score."""
-		# Only show 4 digits for score,
-		# Example: 12345 would be 2345.
-		# Then add space between each character
+		# Only show 4 digits for score, Example: 12345 would be 2345.
+		# Then add space between each character.
 		score = " ".join(str(self.player.score % 10000))
-		if len(score) < 4:
-			score = ("0 " * (4 - len(score))) + score
+
+		print("LEN SCORE: ", ("0 " * (3 - int(len(score) - len(score)/2))))
+		if len(score) < 7:
+			score = ("0 " * (3 - int(len(score) - len(score)/2))) + score
+
+		# Create score image.
 		self.score_image = Text(self.settings, self.screen, 24, score,
 			self.settings.white, self.settings.player1_score_x,
 			self.settings.score_y)
@@ -96,6 +99,7 @@ class ScoreBoard:
 			text.blitme()
 
 		# Draw score.
+		self.prep_player1_score()
 		self.score_image.blitme()
 		self.hi_score_image.blitme()
 

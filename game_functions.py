@@ -127,7 +127,7 @@ def update_player_shots(settings, screen, player, player_shots,
 	check_shot_shield_collisions(settings, screen, player_shots,
 								 shields)
 	check_shot_alien_collisions(settings, screen, player_shots,
-								invaders)
+								invaders, player)
 
 
 def color_surface(surface, rgb_color):
@@ -160,7 +160,7 @@ def check_invader_shield_collisions(settings, screen, invaders, shields):
 
 
 def check_shot_alien_collisions(settings, screen, player_shots,
-								invaders):
+								invaders, player):
 	"""Respond to shot-invader collisions."""
 	# Remove player_shot when colliding.
 	collisions = pygame.sprite.groupcollide(player_shots, invaders,
@@ -172,6 +172,8 @@ def check_shot_alien_collisions(settings, screen, player_shots,
 			for invader in invaders:
 				invader.explode(invader.rect.x - 3, invader.rect.y)
 				settings.invader_killed.play()
+				player.score += 10
+
 
 
 def check_shot_ground_collisions(settings, screen, player_shots,
