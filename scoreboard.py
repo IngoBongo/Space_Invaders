@@ -24,62 +24,53 @@ class ScoreBoard:
 
 	def prep_score_text(self, settings):
 		"""Create rendered image for scoreboard text."""
-		# Text for player 1 score, displayed at left side of screen.
-		self.player1_score_text.append(Text(settings, self.screen,
-			settings.font_size, "S C O R E <  1", settings.white,
-			75, settings.score_text_y))
-		self.player1_score_text.append(Text(self.settings, self.screen,
-			settings.font_size, ">", settings.white,
-			243, settings.score_text_y))
+		# Text for player 1 score, SCORE <1>.
+		self.player1_score_text.append(Text(settings, self.screen, settings.font_size, "S C O R E <  1", settings.white,
+		                                    75, settings.score_text_y))
+		self.player1_score_text.append(Text(self.settings, self.screen, settings.font_size, ">", settings.white,
+		                                    243, settings.score_text_y))
 
-		# Text for hi-score, displayed in middle of screen.
-		self.hi_score_text.append(Text(settings, self.screen,
-			settings.font_size, "H", settings.white,
-			291, settings.score_text_y))
-		self.hi_score_text.append(Text(settings, self.screen,
-			settings.font_size, "I", settings.white,
-			318, settings.score_text_y))
-		self.hi_score_text.append(Text(settings, self.screen,
-			settings.font_size, "S C O R E", settings.white,
-			363, settings.score_text_y))
+		# Text for hi-score, HI SCORE.
+		self.hi_score_text.append(Text(settings, self.screen, settings.font_size, "H", settings.white,
+		                               291, settings.score_text_y))
+		self.hi_score_text.append(Text(settings, self.screen, settings.font_size, "I", settings.white,
+		                               318, settings.score_text_y))
+		self.hi_score_text.append(Text(settings, self.screen, settings.font_size, "S C O R E", settings.white,
+		                               363, settings.score_text_y))
 
-		# Text for player 2 score, displayed at right side of screen.
-		self.player2_score_text.append(Text(settings, self.screen,
-			settings.font_size, "S C O R E <", settings.white,
-			507, settings.score_text_y))
-		self.player2_score_text.append(Text(settings, self.screen,
-			settings.font_size, "2 >", settings.white,
-			651, settings.score_text_y))
+		# Text for player 2 score, SCORE <2>.
+		self.player2_score_text.append(Text(settings, self.screen, settings.font_size, "S C O R E <", settings.white,
+		                                    507, settings.score_text_y))
+		self.player2_score_text.append(Text(settings, self.screen, settings.font_size, "2 >", settings.white,
+		                                    651, settings.score_text_y))
 
 	def prep_player1_score(self):
 		"""Create rendered image of score."""
-		# Only show 4 digits for score, Example: 12345 would be 2345.
-		# Then add space between each character.
-		score = " ".join(str(self.player.score % 10000)).replace("1", "1 ")
+		# Add space between each character and add extra space after each occurrence of '1'.
+		score = " ".join(str(self.player.score)).replace("1", "1 ")
 		num_length = len(str(self.player.score))
 
 		if num_length < 4:
 			score = ("0 " * (4 - num_length)) + score
 
 		# Create score image.
-		self.score_image = Text(self.settings, self.screen, 24, score,
-			self.settings.white, self.settings.player1_score_x,
-			self.settings.score_y)
+		self.score_image = Text(self.settings, self.screen, 24, score, self.settings.white,
+		                        self.settings.player1_score_x, self.settings.score_y)
 
 	def prep_hi_score(self):
 		"""Create rendered image of hi-score."""
-		# Only show 4 digits for score, Example: 12345 would be 2345.
-		# Then add space between each character
-		hi_score = " ".join(str(self.game_stats.hi_score % 10000)).replace("1", "1 ")
+		# Add space between each character and add extra space after each occurrence of '1'.
+		hi_score = " ".join(str(self.game_stats.hi_score)).replace("1", "1 ")
 		num_length = len(str(self.game_stats.hi_score))
 
 		if num_length < 4:
 			hi_score = ("0 " * (4 - num_length)) + hi_score
-		self.hi_score_image = Text(self.settings, self.screen, 24,
-			hi_score, self.settings.white, self.settings.hi_score_x,
-			self.settings.score_y)
 
-	#def prep_player2_score(self):
+		# Create hi_score image.
+		self.hi_score_image = Text(self.settings, self.screen, 24, hi_score, self.settings.white,
+		                           self.settings.hi_score_x, self.settings.score_y)
+
+	# def prep_player2_score(self):
 		# TODO: add player 2 score.
 
 	def show_score(self):
@@ -104,4 +95,3 @@ class ScoreBoard:
 		self.prep_hi_score()
 		self.score_image.blitme()
 		self.hi_score_image.blitme()
-

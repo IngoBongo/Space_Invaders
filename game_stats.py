@@ -4,6 +4,7 @@ class GameStats():
 	def __init__(self):
 		"""Initialize game statistics."""
 		self.hi_score = 0
+		self.level = 1
 		
 	def reset_game_stats(self):
 		"""

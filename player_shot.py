@@ -1,10 +1,10 @@
 import pygame
-import time
-from pygame.sprite import Sprite
 from pygame.sprite import Group
-from block import Block
-from explosion import Explosion
+from pygame.sprite import Sprite
+
 import game_functions as func
+from explosion import Explosion
+
 
 class PlayerShot(Sprite):
 	"""A class representing a shot from the player."""
@@ -17,8 +17,7 @@ class PlayerShot(Sprite):
 		self.player = player
 		
 		# Load shot image and set its rect.
-		self.image = pygame.transform.scale(
-			pygame.image.load("images/shots/player_shot.png"), (3, 12))
+		self.image = pygame.transform.scale(pygame.image.load("images/shots/player_shot.png"), (3, 12))
 		self.rect = self.image.get_rect()
 		self.rect.centerx = player.rect.centerx
 		self.rect.top = player.rect.top

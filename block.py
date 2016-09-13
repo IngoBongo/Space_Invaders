@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
+
 class Block(Sprite):
 	"""A class representing a single block."""
 	

@@ -1,4 +1,3 @@
-import pygame
 from pygame.sprite import Sprite
 
 class Player(Sprite):
@@ -47,9 +46,9 @@ class Player(Sprite):
 	def update(self):
 		"""Update position of the player depending on movement flags."""
 		# Update value of center based on movement flags
-		if (self.moving_right and self.rect.right < self.right_boundary):
+		if self.moving_right and self.rect.right < self.right_boundary:
 			self.rect.centerx += self.settings.player_speed
-		if (self.moving_left and self.rect.left > self.left_boundary):
+		if self.moving_left and self.rect.left > self.left_boundary:
 			self.rect.centerx -= self.settings.player_speed
 		
 		# Correct rect if player_speed makes ship go off screen.

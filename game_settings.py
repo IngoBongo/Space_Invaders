@@ -20,14 +20,12 @@ class Settings():
 		self.font_size = 24
 		
 		# Game sounds
-		self.player_shoot 	= pygame.mixer.Sound(
-			"sounds/player_shoot.wav")
+		self.player_shoot 	= pygame.mixer.Sound("sounds/player_shoot.wav")
 		self.player_shoot.set_volume(0.2)
-		self.invader_killed = pygame.mixer.Sound(
-			"sounds/invaderkilled.wav")
+		self.invader_killed = pygame.mixer.Sound("sounds/invaderkilled.wav")
 		
 		# Color settings
-		self.black 	= (0, 0 ,0)
+		self.black 	= (0, 0, 0)
 		self.white 	= (255, 255, 255)
 		self.red   	= (255, 0, 0)
 		self.green 	= (0, 255, 0)
@@ -37,8 +35,7 @@ class Settings():
 		self.player_speed      = 3
 		self.player_offsetx	   = 102
 		self.player_y          = self.screen_height - 96
-		self.player_ship_image = pygame.image.load(
-			"images/ships/player.png")
+		self.player_ship_image = pygame.image.load("images/ships/player.png")
 		self.player_lives      = 3
 		
 		# Invader settings

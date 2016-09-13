@@ -50,8 +50,8 @@ def check_keyup_events(event, player):
 		player.moving_left = False
 
 
-def update_screen(settings, screen, scoreboard, player, player_shots,
-				  ground_blocks, remaining_lives, shields, invaders):
+def update_screen(settings, screen, scoreboard, player, player_shots, ground_blocks, remaining_lives, shields,
+                  invaders):
 	"""Update every image on the screen then draw the screen."""
 	# Set the background color.
 	screen.fill(settings.black)
@@ -89,16 +89,14 @@ def player_shoot(settings, screen, player, player_shots):
 		# Create shot and add to player_shots group.
 		player_shot = PlayerShot(settings, screen, player)
 		player_shots.add(player_shot)
+
 		# Play shooting sound effect.
 		settings.player_shoot.play()
 		player.has_active_shot = True
 
 
-def update_player_shots(settings, screen, game_stats, player, player_shots, ground_blocks, shields, invaders):
-	"""
-	Update position of player shots, explode shots that reach
-	a certain height and then remove them.
-	"""
+def update_player_shots(settings, game_stats, player, player_shots, ground_blocks, shields, invaders):
+	"""Update position of player shots, explode shots that reach a certain height and then remove them."""
 	# Update shot position.
 	player_shots.update()
 
@@ -110,8 +108,7 @@ def update_player_shots(settings, screen, game_stats, player, player_shots, grou
 
 		# Set shot to exploded if position is at top of screen.
 		if not shot.exploded and shot.rect.top < 97:
-			shot.explode(shot.rect.x - (settings.block_size * 3),
-						 shot.rect.y - (settings.block_size * 6))
+			shot.explode(shot.rect.x - (settings.block_size * 3), shot.rect.y - (settings.block_size * 6))
 			for block in shot.explosion.image:
 				color_surface(block.image, settings.red)
 		current_time = pygame.time.get_ticks()
@@ -121,11 +118,9 @@ def update_player_shots(settings, screen, game_stats, player, player_shots, grou
 			player_shots.remove(shot)
 			player.has_active_shot = False
 
-	check_shot_ground_collisions(settings, screen, player_shots,
-								 ground_blocks)
-	check_shot_shield_collisions(settings, screen, player_shots,
-								 shields)
-	check_shot_alien_collisions(settings, screen, game_stats, player_shots, invaders, player)
+	check_shot_ground_collisions(player_shots, ground_blocks)
+	check_shot_shield_collisions(settings, player_shots, shields)
+	check_shot_alien_collisions(settings, game_stats, player_shots, invaders, player)
 
 
 def color_surface(surface, rgb_color):
@@ -143,25 +138,23 @@ def create_ground(settings, screen):
 	# Calculate how many blocks fit on the screen and create them.
 	for column in range(int((settings.screen_width / settings.block_size) -
 									int((settings.ground_offsetx * 2) / settings.block_size))):
-		block = Block(settings, screen, settings.green,
-					  settings.ground_offsetx + settings.block_size * column,
+		block = Block(settings, screen, settings.green, settings.ground_offsetx + settings.block_size * column,
 					  settings.ground_y)
 		ground_blocks.add(block)
 
 	return ground_blocks
 
 
-def check_invader_shield_collisions(settings, screen, invaders, shields):
+def check_invader_shield_collisions(invaders, shields):
 	"""Respond to invader-shield collisions."""
 	for shield in shields:
 		pygame.sprite.groupcollide(invaders, shield, False, True)
 
 
-def check_shot_alien_collisions(settings, screen, game_stats, player_shots, invaders, player):
+def check_shot_alien_collisions(settings, game_stats, player_shots, invaders, player):
 	"""Respond to shot-invader collisions."""
 	# Remove player_shot when colliding.
-	collisions = pygame.sprite.groupcollide(player_shots, invaders,
-											True, False)
+	collisions = pygame.sprite.groupcollide(player_shots, invaders, True, False)
 
 	# Create explosion for killed invader.
 	if collisions:
@@ -169,35 +162,32 @@ def check_shot_alien_collisions(settings, screen, game_stats, player_shots, inva
 			for invader in invaders:
 				invader.explode(invader.rect.x - 3, invader.rect.y)
 				settings.invader_killed.play()
-				update_score(settings, game_stats, invader, player)
+				update_score(settings, game_stats, invader.row, player)
 
 
-def update_score(settings, game_stats, invader, player):
-	if invader.row == 0:
+def update_score(settings, game_stats, row, player):
+	"""Update player/hi score depending on invader row."""
+	if row == 0:
 		player.score = (player.score + settings.invader_1_score) % 10000
-	elif invader.row == 1 or invader.row == 2:
+	elif row == 1 or row == 2:
 		player.score = (player.score + settings.invader_2_score) % 10000
 	else:
 		player.score = (player.score + settings.invader_3_score) % 10000
 	if player.score > game_stats.hi_score:
 		game_stats.hi_score = player.score
 
-def check_shot_ground_collisions(settings, screen, player_shots,
-								 ground_blocks):
+
+def check_shot_ground_collisions(player_shots, ground_blocks):
 	"""Respond to shot-ground collisions."""
-	collisions = pygame.sprite.groupcollide(player_shots, ground_blocks,
-											False, True)
+	# TODO: should be invader_shots, not player_shots... only put that like that for testing purposes.
+	pygame.sprite.groupcollide(player_shots, ground_blocks, False, True)
 
 
-# TODO: should be invader_shots, not player_shots... only put that like that for testing purposes.
-
-def check_shot_shield_collisions(settings, screen, player_shots,
-								 shields):
+def check_shot_shield_collisions(settings, player_shots, shields):
 	"""Respond to shot-shield collisions."""
 
 	for shield in shields:
-		collisions = pygame.sprite.groupcollide(player_shots, shield,
-												False, False)
+		collisions = pygame.sprite.groupcollide(player_shots, shield, False, False)
 
 		# If there were collisions find lowest block 
 		# that collided with shot.
@@ -228,10 +218,9 @@ def create_lives(settings, screen, player):
 	remaining_lives = Group()
 
 	for number in range(player.remaining_lives - 1):
-		# Create life and add it to remainin_lives.
-		new_life = Life(settings, screen,
-						(settings.life_ship_offsetx + (settings.life_ship_spacing +
-													   39) * number), settings.life_y)
+		# Create life and add it to remaining_lives.
+		new_life = Life(settings, screen, (settings.life_ship_offsetx + (settings.life_ship_spacing + 39) * number),
+		                settings.life_y)
 		remaining_lives.add(new_life)
 
 	return remaining_lives
@@ -243,8 +232,7 @@ def show_lives(settings, screen, player, remaining_lives):
 	remaining_lives.draw(screen)
 
 	# Render number of lives into image and draw it.
-	lives_text = Text(settings, screen, settings.font_size,
-					  str(player.remaining_lives), settings.white,
+	lives_text = Text(settings, screen, settings.font_size, str(player.remaining_lives), settings.white,
 					  settings.life_text_offsetx, settings.life_y)
 	lives_text.blitme()
 
@@ -260,7 +248,6 @@ def create_shield(settings, screen, number):
 								  settings.shield_x + (132 * number + number * 3) + (column * settings.block_size),
 								  settings.shield_y + (row * settings.block_size))
 				shield_blocks.add(new_block)
-
 	return shield_blocks
 
 
@@ -283,7 +270,7 @@ def create_fleet(settings, screen, invaders):
 			invaders.add(new_invader)
 
 
-def update_invaders(settings, screen, invaders, shields):
+def update_invaders(settings, invaders, shields):
 	check_fleet_boundary(settings, invaders)
 	current_time = pygame.time.get_ticks()
 	for invader in invaders.sprites():
@@ -293,7 +280,7 @@ def update_invaders(settings, screen, invaders, shields):
 		if invader.exploded and current_time - invader.time_of_last_move > 300:
 			invaders.remove(invader)
 	# TODO: Causing lag, need to only check invader_shield_collision if lowest invader is at shield level?
-	#check_invader_shield_collisions(settings, screen, invaders, shields)
+	# check_invader_shield_collisions(invaders, shields)
 
 
 def entire_fleet_has_moved(invaders):
@@ -302,7 +289,7 @@ def entire_fleet_has_moved(invaders):
 	# Count how many invaders have moved.
 	count = 0
 	for invader in invaders.sprites():
-		if invader.has_moved == True:
+		if invader.has_moved is True:
 			count += 1
 
 	# Check if every invader has moved.
@@ -314,10 +301,7 @@ def entire_fleet_has_moved(invaders):
 
 
 def check_fleet_boundary(settings, invaders):
-	"""
-	Check if any invader is at edge of boundary, 
-	change direction if so.
-	"""
+	"""Check if any invader is at edge of boundary, change direction if so."""
 	boundary_reached = False
 	for invader in invaders.sprites():
 		if invader.is_at_boundary():

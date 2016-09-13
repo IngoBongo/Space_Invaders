@@ -57,48 +57,39 @@ class Game():
         self.game_stats = GameStats()
 
         # Make ScoreBoard object.
-        self.scoreboard = ScoreBoard(self.settings, self.screen,
-                                     self.player, self.game_stats)
+        self.scoreboard = ScoreBoard(self.settings, self.screen, self.player, self.game_stats)
 
         # Make player shot object Group.
         self.player_shots = Group()
         self.invader_shots = Group()
 
         # Make group for ground and initialise it.
-        self.ground_blocks = func.create_ground(self.settings,
-                                                self.screen)
+        self.ground_blocks = func.create_ground(self.settings, self.screen)
 
         # Make list of shield groups.
-        self.shields = [func.create_shield(self.settings, self.screen,
-                                           number)
-                        for number in range(4)]
+        self.shields = [func.create_shield(self.settings, self.screen, number) for number in range(4)]
 
         # Make group for lives and initialise it.
-        self.remaining_lives = func.create_lives(self.settings,
-                                                 self.screen, self.player)
+        self.remaining_lives = func.create_lives(self.settings, self.screen, self.player)
 
     def run_game(self):
         """Main function for Space Invaders."""
 
         # Start the main loop for Space Invaders.
         while True:
-            func.check_events(self.settings, self.screen, self.player,
-                              self.player_shots)
+            func.check_events(self.settings, self.screen, self.player, self.player_shots)
 
             self.player.update()
 
             # Only update shot when there is a shot on the screen.
             if self.player.has_active_shot:
-                func.update_player_shots(self.settings, self.screen, self.game_stats, self.player, self.player_shots,
+                func.update_player_shots(self.settings, self.game_stats, self.player, self.player_shots,
                                          self.ground_blocks, self.shields, self.invaders)
 
-            func.update_invaders(self.settings, self.screen,
-                                 self.invaders, self.shields)
+            func.update_invaders(self.settings, self.invaders, self.shields)
 
-            func.update_screen(self.settings, self.screen,
-                               self.scoreboard, self.player, self.player_shots,
-                               self.ground_blocks, self.remaining_lives, self.shields,
-                               self.invaders)
+            func.update_screen(self.settings, self.screen, self.scoreboard, self.player, self.player_shots,
+                               self.ground_blocks, self.remaining_lives, self.shields, self.invaders)
             # Set max fps.
             self.clock.tick(self.settings.fps)
 

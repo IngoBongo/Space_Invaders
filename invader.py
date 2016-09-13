@@ -1,6 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
+
 class Invader(Sprite):
 	"""A class representing a single Invader."""
 	
@@ -23,7 +24,7 @@ class Invader(Sprite):
 		self.rect.x = x
 		self.rect.y = y
 		
-		# Set time of last time invader moved/time of instatiation.
+		# Set time of last time invader moved/time of instantiation.
 		self.time_of_last_move = pygame.time.get_ticks()
 		
 		# Set moved flag.
@@ -33,7 +34,7 @@ class Invader(Sprite):
 	def change_image(self):
 		"""Change to next image."""
 		# Use bitwise XOR to toggle index between 0 and 1.
-		self.image_index = self.image_index ^ 1
+		self.image_index ^= 1
 		self.image = self.images[self.image_index]
 	
 	def change_direction(self):
@@ -49,9 +50,8 @@ class Invader(Sprite):
 		else:
 			number = "3"
 		
-		self.images = [pygame.image.load("images/invaders/invader" + 
-			number + "-" + str(n) + ".png")
-			for n in range(1, 3)]
+		self.images = [pygame.image.load("images/invaders/invader" + number + "-" + str(n) + ".png")
+		               for n in range(1, 3)]
 	
 	def blitme(self):
 		"""Draw the invader at its current position."""
@@ -60,8 +60,7 @@ class Invader(Sprite):
 	def update(self, current_time):
 		"""Update position of invader."""
 		# Check if its time to move, only move if not exploded.
-		if (current_time - self.time_of_last_move >= self.settings.invader_move_time
-			and not self.exploded):
+		if current_time - self.time_of_last_move >= self.settings.invader_move_time and not self.exploded:
 			# Move invader, change image and set time of move.
 			self.rect.x += self.settings.invader_move_x * self.settings.fleet_direction
 			self.change_image()

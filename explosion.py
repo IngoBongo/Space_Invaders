@@ -3,11 +3,11 @@ from pygame.sprite import Sprite
 from pygame.sprite import Group
 from block import Block
 
+
 class Explosion(Sprite):
 	"""A class representing an explosion."""
 	
-	def __init__(self, settings, screen, x, y, ship_shot, invader_shot, 
-			ship, invader, mystery):
+	def __init__(self, settings, screen, x, y, ship_shot, invader_shot, ship, invader, mystery):
 		super(Explosion, self).__init__()
 		self.settings = settings
 		self.screen = screen
@@ -26,14 +26,10 @@ class Explosion(Sprite):
 			self.image = self.create_ship_shot_explosion(self.settings, 
 				self.screen, self.x, self.y)
 		elif invader:
-			self.image = pygame.image.load(
-				"images/explosions/invader_explosion.png")
+			self.image = pygame.image.load("images/explosions/invader_explosion.png")
 
 	def create_ship_shot_explosion(self, settings, screen, x, y):
-		"""
-		Create and return explosion "sprite" as a group of Blocks.
-		Topleft point of group is set to x, y.
-		"""
+		"""Create and return explosion "sprite" as a group of Blocks. Top-left point of group is set to x, y. """
 		explode_blocks = Group()
 		
 		for row in range(settings.player_shot_explode_rows):
