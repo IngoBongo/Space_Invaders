@@ -130,10 +130,14 @@ def update_player_shots(settings, game_stats, player, player_shots, ground_block
 
 def update_invader_shots(settings, invader_shots):
 	"""Update position of invader shots."""
+
+	current_time = pygame.time.get_ticks()
 	# Update shot position.
-	invader_shots.update()
+	invader_shots.update(current_time)
 
 	for shot in invader_shots:
+
+
 		if shot.rect.bottom >= settings.screen_height:
 			invader_shots.remove(shot)
 
@@ -295,8 +299,8 @@ def update_invaders(settings, screen, invaders, shields, invader_shots):
 		if invader.exploded and current_time - invader.time_of_last_move > 300:
 			invaders.remove(invader)
 
-	# 3% chance for invader to try shooting
-	if randint(0, 99) < 3:
+	# 2% chance for invader to try shooting
+	if randint(0, 99) < 2:
 		invader_shoot(settings, screen, find_invader_shooter(invaders), invader_shots)
 
 	# TODO: Causing lag, need to only check invader_shield_collision if lowest invader is at shield level?

@@ -28,6 +28,9 @@ class InvaderShot(Sprite):
 		self.rect.centerx = invader.rect.centerx
 		self.rect.bottom = invader.rect.bottom
 
+		# Set time of last image flip, set it high at first so image starts flipping right away.
+		self.time_of_last_image_flip = 100
+
 		# Blocks making up the explosion will be stored in this group.
 		self.explosion = Group()
 
@@ -41,25 +44,26 @@ class InvaderShot(Sprite):
 	def load_images(self):
 		"""Choose random invader_shot animation variation and load all images for it."""
 		self.shot_variant = randint(1, 3)
-		if self.shot_variant == 3:
-			self.images = [pygame.image.load("images/shots/invader-shot" +
-			                                 str(self.shot_variant) + "-" + str(n) + ".png") for n in range(1, 4)]
-		else:
-			self.images = [pygame.image.load("images/shots/invader-shot" +
-			                                 str(self.shot_variant) + "-" + str(n) + ".png") for n in range(1, 5)]
+		#if self.shot_variant == 3:
+		#	self.images = [pygame.image.load("images/shots/invader-shot" +
+		#	                                 str(self.shot_variant) + "-" + str(n) + ".png") for n in range(1, 4)]
+		# else:
+		self.images = [pygame.image.load("images/shots/invader-shot" + str(self.shot_variant) + "-" + str(n) + ".png")
+		               for n in range(1, 5)]
 
 	def blitme(self):
 		"""Draw the InvaderShot at it's current location."""
 		self.screen.blit(self.image, self.rect)
 
-	def change_image(self):
-		if self.shot_variant == 3:
-			self.image_index = (self.image_index + 1) % 3
-		else:
-			self.image_index = (self.image_index + 1) % 4
+	def flip_image(self):
+		self.image_index += 1
+		#if self.shot_variant == 3:
+		#	self.image_index %= 3
+		#elif self.shot_variant == 1 or self.shot_variant == 2:
+		self.image_index %= 4
 		self.image = self.images[self.image_index]
 
-	def update(self):
+	def update(self, current_time):
 		"""Update position of shot."""
 		# Move shot down the screen if it hasn't exploded yet.
 		if not self.exploded:
@@ -67,6 +71,10 @@ class InvaderShot(Sprite):
 			# Update the rect
 			self.rect.y = self.y
 			self.center = self.rect.centerx
+
+		if current_time - self.time_of_last_image_flip >= self.settings.invader_shot_flip_time:
+			self.flip_image()
+			self.time_of_last_image_flip = current_time
 
 	def explode(self, x, y):
 		"""Set shot to exploded state."""
