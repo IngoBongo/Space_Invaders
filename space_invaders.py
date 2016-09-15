@@ -86,10 +86,13 @@ class Game():
                 func.update_player_shots(self.settings, self.game_stats, self.player, self.player_shots,
                                          self.ground_blocks, self.shields, self.invaders)
 
-            func.update_invaders(self.settings, self.invaders, self.shields)
+            func.update_invader_shots(self.settings, self.invader_shots)
+
+            func.update_invaders(self.settings, self.screen, self.invaders, self.shields, self.invader_shots)
 
             func.update_screen(self.settings, self.screen, self.scoreboard, self.player, self.player_shots,
-                               self.ground_blocks, self.remaining_lives, self.shields, self.invaders)
+                               self.ground_blocks, self.remaining_lives, self.shields, self.invaders,
+                               self.invader_shots)
             # Set max fps.
             self.clock.tick(self.settings.fps)
 

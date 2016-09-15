@@ -53,13 +53,16 @@ def check_keyup_events(event, player):
 
 
 def update_screen(settings, screen, scoreboard, player, player_shots, ground_blocks, remaining_lives, shields,
-                  invaders):
+                  invaders, invader_shots):
 	"""Update every image on the screen then draw the screen."""
 	# Set the background color.
 	screen.fill(settings.black)
 
 	# Draw player shots behind ship.
 	player_shots.draw(screen)
+
+	# Draw invader shots behind invaders.
+	invader_shots.draw(screen)
 
 	# Draw the player ship.
 	player.blitme()
@@ -123,6 +126,16 @@ def update_player_shots(settings, game_stats, player, player_shots, ground_block
 	check_shot_ground_collisions(player_shots, ground_blocks)
 	check_shot_shield_collisions(settings, player_shots, shields)
 	check_shot_alien_collisions(settings, game_stats, player_shots, invaders, player)
+
+
+def update_invader_shots(settings, invader_shots):
+	"""Update position of invader shots."""
+	# Update shot position.
+	invader_shots.update()
+
+	for shot in invader_shots:
+		if shot.rect.bottom >= settings.screen_height:
+			invader_shots.remove(shot)
 
 
 def color_surface(surface, rgb_color):
@@ -272,7 +285,7 @@ def create_fleet(settings, screen, invaders):
 			invaders.add(new_invader)
 
 
-def update_invaders(settings, invaders, shields):
+def update_invaders(settings, screen, invaders, shields, invader_shots):
 	check_fleet_boundary(settings, invaders)
 	current_time = pygame.time.get_ticks()
 	for invader in invaders.sprites():
@@ -281,6 +294,11 @@ def update_invaders(settings, invaders, shields):
 		# Show explosion for a little bit and then remove it.
 		if invader.exploded and current_time - invader.time_of_last_move > 300:
 			invaders.remove(invader)
+
+	# 3% chance for invader to try shooting
+	if randint(0, 99) < 3:
+		invader_shoot(settings, screen, find_invader_shooter(invaders), invader_shots)
+
 	# TODO: Causing lag, need to only check invader_shield_collision if lowest invader is at shield level?
 	# check_invader_shield_collisions(invaders, shields)
 
@@ -331,19 +349,23 @@ def find_invader_shooter(invaders):
 		column_set.add(invader.column)
 
 	# Select one column at random
-	col = column_set[randint(0, len(column_set+1))]
+	column_list = list(column_set)
+	col = column_list[randint(0, len(column_list) - 1)]
 
 	# Select lowest invader in column as shooter
 	row_invaders = []
 	for invader in invaders:
 		if invader.column == col:
-			row_invaders.append(invader)
-	shooter = max(row_invaders)
-	return shooter
+			row_invaders.append(invader.row)
+
+	row = max(row_invaders)
+
+	for invader in invaders:
+		if invader.column == col and invader.row == row:
+			return invader
 
 
 def invader_shoot(settings, screen, shooter, invader_shots):
 	if len(invader_shots) < settings.invadershot_limit:
-		# TODO: Create InvaderShot class
 		invader_shot = InvaderShot(settings, screen, shooter)
 		invader_shots.add(invader_shot)

@@ -61,7 +61,7 @@ class Settings():
 		# Shot settings
 		self.playershot_speed = 12
 		self.playershot_limit = 1
-		self.invadershot_speed = 6
+		self.invadershot_speed = 3
 		self.invadershot_limit = 3
 		
 		# Ground settings
@@ -96,8 +96,8 @@ class Settings():
 			['b','.','.','b','.','.','.','b']]
 
 		self.invader_shot_explode_rows = 0
-		self.invader_shot_explode_collumns = 0
-		self.player_shot_explode_array = [[]]
+		self.invader_shot_explode_columns = 0
+		self.invader_shot_explode_array = [[]]
 		
 		# Shield settings
 		self.shield_rows    = 16

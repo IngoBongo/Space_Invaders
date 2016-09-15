@@ -48,6 +48,10 @@ class InvaderShot(Sprite):
 			self.images = [pygame.image.load("images/shots/invader-shot" +
 			                                 str(self.shot_variant) + "-" + str(n) + ".png") for n in range(1, 5)]
 
+	def blitme(self):
+		"""Draw the InvaderShot at it's current location."""
+		self.screen.blit(self.image, self.rect)
+
 	def change_image(self):
 		if self.shot_variant == 3:
 			self.image_index = (self.image_index + 1) % 3
