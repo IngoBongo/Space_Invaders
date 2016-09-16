@@ -26,7 +26,7 @@ class InvaderShot(Sprite):
 		self.image = self.images[self.image_index]
 		self.rect = self.image.get_rect()
 		self.rect.centerx = invader.rect.centerx
-		self.rect.bottom = invader.rect.bottom
+		self.rect.top = invader.rect.bottom + 27
 
 		# Set time of last image flip, set it high at first so image starts flipping right away.
 		self.time_of_last_image_flip = 100
@@ -44,10 +44,6 @@ class InvaderShot(Sprite):
 	def load_images(self):
 		"""Choose random invader_shot animation variation and load all images for it."""
 		self.shot_variant = randint(1, 3)
-		#if self.shot_variant == 3:
-		#	self.images = [pygame.image.load("images/shots/invader-shot" +
-		#	                                 str(self.shot_variant) + "-" + str(n) + ".png") for n in range(1, 4)]
-		# else:
 		self.images = [pygame.image.load("images/shots/invader-shot" + str(self.shot_variant) + "-" + str(n) + ".png")
 		               for n in range(1, 5)]
 
@@ -56,11 +52,7 @@ class InvaderShot(Sprite):
 		self.screen.blit(self.image, self.rect)
 
 	def flip_image(self):
-		self.image_index += 1
-		#if self.shot_variant == 3:
-		#	self.image_index %= 3
-		#elif self.shot_variant == 1 or self.shot_variant == 2:
-		self.image_index %= 4
+		self.image_index = (self.image_index + 1) % 4
 		self.image = self.images[self.image_index]
 
 	def update(self, current_time):
