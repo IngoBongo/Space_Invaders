@@ -100,7 +100,7 @@ def player_shoot(settings, screen, player, player_shots):
 		player.has_active_shot = True
 
 
-def update_player_shots(settings, game_stats, player, player_shots, ground_blocks, shields, invaders):
+def update_player_shots(settings, game_stats, player, player_shots, shields, invaders, invader_shots):
 	"""Update position of player shots, explode shots that reach a certain height and then remove them."""
 	# Update shot position.
 	player_shots.update()
@@ -123,12 +123,12 @@ def update_player_shots(settings, game_stats, player, player_shots, ground_block
 			player_shots.remove(shot)
 			player.has_active_shot = False
 
-	check_shot_ground_collisions(player_shots, ground_blocks)
 	check_shot_shield_collisions(settings, player_shots, shields)
+	check_shot_shot_collision(settings, player_shots, invader_shots)
 	check_shot_alien_collisions(settings, game_stats, player_shots, invaders, player)
 
 
-def update_invader_shots(settings, invader_shots):
+def update_invader_shots(settings, invader_shots, ground_blocks):
 	"""Update position of invader shots."""
 
 	current_time = pygame.time.get_ticks()
@@ -137,9 +137,10 @@ def update_invader_shots(settings, invader_shots):
 
 	for shot in invader_shots:
 
-
 		if shot.rect.bottom >= settings.screen_height:
 			invader_shots.remove(shot)
+
+	# check_shot_ground_collisions(invader_shots, ground_blocks)
 
 
 def color_surface(surface, rgb_color):
@@ -231,6 +232,16 @@ def check_shot_shield_collisions(settings, player_shots, shields):
 					color_surface(block.image, settings.green)
 				pygame.sprite.groupcollide(shot.explosion.image, shield, False, True)
 
+def check_shot_shot_collision(settings, player_shots, invader_shots):
+	"""Respond to player_shot/invader_shot collisions."""
+
+	for shot in player_shots:
+		collisions = pygame.sprite.groupcollide(player_shots, invader_shots, False, False)
+
+		if collisions and not shot.exploded:
+			print(collisions)
+			for p_shot, i_shot in collisions.items():
+				p_shot.explode(i_shot[0].rect.x, i_shot[0].rect.y)
 
 def create_lives(settings, screen, player):
 	"""Create and return group of sprites for remaining lives."""
