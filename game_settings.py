@@ -98,7 +98,15 @@ class Settings():
 
 		self.invader_shot_explode_rows = 0
 		self.invader_shot_explode_columns = 0
-		self.invader_shot_explode_array = [[]]
+		self.invader_shot_explode_array = [
+			['.', '.', 'b', '.', '.', '.'],
+			['b', '.', 'b', '.', 'b', '.'],
+			['.', '.', 'b', 'b', '.', 'b'],
+			['.', 'b', 'b', 'b', 'b', '.'],
+			['b', '.', 'b', 'b', 'b', '.'],
+			['.', 'b', 'b', 'b', 'b', 'b'],
+			['b', '.', 'b', 'b', 'b', '.'],
+			['.', 'b', '.', 'b', '.', 'b']]
 		
 		# Shield settings
 		self.shield_rows    = 16
