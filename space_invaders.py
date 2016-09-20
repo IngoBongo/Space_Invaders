@@ -72,6 +72,8 @@ class Game():
         # Make group for lives and initialise it.
         self.remaining_lives = func.create_lives(self.settings, self.screen, self.player)
 
+        self.frame_count = 0
+
     def run_game(self):
         """Main function for Space Invaders."""
 
@@ -86,7 +88,8 @@ class Game():
                 func.update_player_shots(self.settings, self.game_stats, self.player, self.player_shots, self.shields,
                                          self.invaders, self.invader_shots)
 
-            func.update_invader_shots(self.settings, self.invader_shots, self.ground_blocks)
+            self.frame_count = func.update_invader_shots(self.settings, self.invader_shots, self.ground_blocks,
+                                                     self.frame_count)
 
             func.update_invaders(self.settings, self.screen, self.invaders, self.shields, self.invader_shots)
 

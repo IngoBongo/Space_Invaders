@@ -26,10 +26,6 @@ class InvaderShot(Sprite):
 		self.image = self.images[self.image_index]
 		self.set_rect()
 
-
-		# Set time of last image flip, set it high at first so image starts flipping right away.
-		self.time_of_last_image_flip = 100
-
 		# Blocks making up the explosion will be stored in this group.
 		self.explosion = Group()
 
@@ -61,7 +57,7 @@ class InvaderShot(Sprite):
 		self.image_index = (self.image_index + 1) % 4
 		self.image = self.images[self.image_index]
 
-	def update(self, current_time):
+	def update(self):
 		"""Update position of shot."""
 		# Move shot down the screen if it hasn't exploded yet.
 		if not self.exploded:
@@ -70,9 +66,7 @@ class InvaderShot(Sprite):
 			self.rect.y = self.y
 			self.center = self.rect.centerx
 
-		if current_time - self.time_of_last_image_flip >= self.settings.invader_shot_flip_time:
-			self.flip_image()
-			self.time_of_last_image_flip = current_time
+		self.flip_image()
 
 	def explode(self, x, y):
 		"""Set shot to exploded state."""

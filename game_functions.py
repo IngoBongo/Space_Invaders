@@ -128,17 +128,21 @@ def update_player_shots(settings, game_stats, player, player_shots, shields, inv
 	check_shot_alien_collisions(settings, game_stats, player_shots, invaders, player)
 
 
-def update_invader_shots(settings, invader_shots, ground_blocks):
+def update_invader_shots(settings, invader_shots, ground_blocks, frame_count):
 	"""Update position of invader shots."""
+	frame_count += 1
+	if frame_count == 3:
 
-	current_time = pygame.time.get_ticks()
-	# Update shot position.
-	invader_shots.update(current_time)
+		# Update shot position.
+		invader_shots.update()
+		for shot in invader_shots:
 
-	for shot in invader_shots:
+			if shot.rect.bottom >= settings.screen_height:
+				invader_shots.remove(shot)
 
-		if shot.rect.bottom >= settings.screen_height:
-			invader_shots.remove(shot)
+		frame_count = 0
+
+	return frame_count
 
 	# check_shot_ground_collisions(invader_shots, ground_blocks)
 
