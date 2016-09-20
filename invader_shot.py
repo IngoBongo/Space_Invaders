@@ -74,7 +74,6 @@ class InvaderShot(Sprite):
 		self.exploded = True
 		# Color shot black to hide it.
 		func.color_surface(self.image, self.settings.black)
-		#[func.color_surface(self.images[i], self.settings.black) for i in range(1, 5)]
 		# Create explosion "image".
 		self.explosion = Explosion(self.settings, self.screen, x, y,
 		                           False, True, False, False, False)

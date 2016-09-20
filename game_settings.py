@@ -93,7 +93,7 @@ class Settings():
 			['b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'],
 			['.', 'b', 'b', 'b', 'b', 'b', 'b', '.'],
 			['.', '.', 'b', '.', '.', 'b', '.', '.'],
-			['b', '.', '.', 'b', '.', '.', '.',  'b']]
+			['b', '.', '.', 'b', '.', '.', '.', 'b']]
 
 		self.invader_shot_explode_rows = 8
 		self.invader_shot_explode_columns = 6

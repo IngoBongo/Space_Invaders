@@ -140,8 +140,6 @@ def update_invader_shots(settings, invader_shots, ground_blocks, shields, frame_
 		invader_shots.update()
 		for shot in invader_shots:
 
-			if shot.rect.bottom >= settings.screen_height:
-				invader_shots.remove(shot)
 			current_time = pygame.time.get_ticks()
 
 			# Show explosion for a little bit and then remove it.
@@ -149,7 +147,7 @@ def update_invader_shots(settings, invader_shots, ground_blocks, shields, frame_
 				invader_shots.remove(shot)
 
 		frame_count = 0
-	# check_shot_ground_collisions(invader_shots, ground_blocks)
+	check_shot_ground_collisions(settings, invader_shots, ground_blocks)
 	check_invader_shot_shield_collisions(settings, invader_shots, shields)
 	return frame_count
 
@@ -208,10 +206,17 @@ def update_score(settings, game_stats, row, player):
 		game_stats.hi_score = player.score
 
 
-def check_shot_ground_collisions(player_shots, ground_blocks):
+def check_shot_ground_collisions(settings, invader_shots, ground_blocks):
 	"""Respond to shot-ground collisions."""
-	# TODO: should be invader_shots, not player_shots... only put that like that for testing purposes.
-	pygame.sprite.groupcollide(player_shots, ground_blocks, False, True)
+
+	collisions = pygame.sprite.groupcollide(invader_shots, ground_blocks, False, False)
+	if collisions:
+		for shot, block_list in collisions.items():
+			if not shot.exploded:
+				shot.explode(shot.rect.x - 9, shot.rect.y - 3)
+				pygame.sprite.groupcollide(shot.explosion.image, ground_blocks, False, True)
+				for block in shot.explosion.image:
+					color_surface(block.image, settings.green)
 
 
 def check_invader_shot_shield_collisions(settings, invader_shots, shields):
@@ -265,7 +270,6 @@ def check_shot_shot_collision(settings, player_shots, invader_shots):
 		collisions = pygame.sprite.groupcollide(player_shots, invader_shots, False, False)
 
 		if collisions and not shot.exploded:
-			print(collisions)
 			for p_shot, i_shot in collisions.items():
 				p_shot.explode(i_shot[0].rect.x, i_shot[0].rect.y)
 
