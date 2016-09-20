@@ -228,9 +228,9 @@ def check_invader_shot_shield_collisions(settings, invader_shots, shields):
 		if collisions:
 			for shot, block_list in collisions.items():
 				shot.explode(shot.rect.x - 6, shot.rect.y)
-			for block in shot.explosion.image:
-				color_surface(block.image, settings.green)
-			pygame.sprite.groupcollide(shot.explosion.image, shield, False, True)
+				pygame.sprite.groupcollide(shot.explosion.image, shield, False, True)
+				for block in shot.explosion.image:
+					color_surface(block.image, settings.green)
 
 
 def check_shot_shield_collisions(settings, player_shots, shields):
