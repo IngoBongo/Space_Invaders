@@ -83,6 +83,9 @@ def update_screen(settings, screen, scoreboard, player, player_shots, ground_blo
 	for shot in player_shots:
 		if shot.exploded:
 			shot.explosion.image.draw(screen)
+	for shot in invader_shots:
+		if shot.exploded:
+			shot.explosion.image.draw(screen)
 
 	# Make the most recently drawn screen visible.
 	pygame.display.update()
@@ -128,7 +131,7 @@ def update_player_shots(settings, game_stats, player, player_shots, shields, inv
 	check_shot_alien_collisions(settings, game_stats, player_shots, invaders, player)
 
 
-def update_invader_shots(settings, invader_shots, ground_blocks, frame_count):
+def update_invader_shots(settings, invader_shots, ground_blocks, shields, frame_count):
 	"""Update position of invader shots."""
 	frame_count += 1
 	if frame_count == 3:
@@ -139,12 +142,16 @@ def update_invader_shots(settings, invader_shots, ground_blocks, frame_count):
 
 			if shot.rect.bottom >= settings.screen_height:
 				invader_shots.remove(shot)
+			current_time = pygame.time.get_ticks()
+
+			# Show explosion for a little bit and then remove it.
+			if shot.exploded and current_time - shot.explosion.timer > 300:
+				invader_shots.remove(shot)
 
 		frame_count = 0
-
-	return frame_count
-
 	# check_shot_ground_collisions(invader_shots, ground_blocks)
+	check_invader_shot_shield_collisions(settings, invader_shots, shields)
+	return frame_count
 
 
 def color_surface(surface, rgb_color):
@@ -207,6 +214,20 @@ def check_shot_ground_collisions(player_shots, ground_blocks):
 	pygame.sprite.groupcollide(player_shots, ground_blocks, False, True)
 
 
+def check_invader_shot_shield_collisions(settings, invader_shots, shields):
+	"""Respond to invader_shot-shield collisions."""
+
+	for shield in shields:
+		collisions = pygame.sprite.groupcollide(invader_shots, shield, False, False)
+
+		if collisions:
+			for shot, block_list in collisions.items():
+				shot.explode(shot.rect.x - 6, shot.rect.y)
+			for block in shot.explosion.image:
+				color_surface(block.image, settings.green)
+			pygame.sprite.groupcollide(shot.explosion.image, shield, False, True)
+
+
 def check_shot_shield_collisions(settings, player_shots, shields):
 	"""Respond to shot-shield collisions."""
 
@@ -236,6 +257,7 @@ def check_shot_shield_collisions(settings, player_shots, shields):
 					color_surface(block.image, settings.green)
 				pygame.sprite.groupcollide(shot.explosion.image, shield, False, True)
 
+
 def check_shot_shot_collision(settings, player_shots, invader_shots):
 	"""Respond to player_shot/invader_shot collisions."""
 
@@ -246,6 +268,7 @@ def check_shot_shot_collision(settings, player_shots, invader_shots):
 			print(collisions)
 			for p_shot, i_shot in collisions.items():
 				p_shot.explode(i_shot[0].rect.x, i_shot[0].rect.y)
+
 
 def create_lives(settings, screen, player):
 	"""Create and return group of sprites for remaining lives."""

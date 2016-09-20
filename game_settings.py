@@ -99,7 +99,7 @@ class Settings():
 		self.invader_shot_explode_columns = 6
 		self.invader_shot_explode_array = [
 			['.', '.', 'b', '.', '.', '.'],
-			['b', '.', 'b', '.', 'b', '.'],
+			['b', '.', '.', '.', 'b', '.'],
 			['.', '.', 'b', 'b', '.', 'b'],
 			['.', 'b', 'b', 'b', 'b', '.'],
 			['b', '.', 'b', 'b', 'b', '.'],

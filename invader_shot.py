@@ -54,8 +54,9 @@ class InvaderShot(Sprite):
 		self.screen.blit(self.image, self.rect)
 
 	def flip_image(self):
-		self.image_index = (self.image_index + 1) % 4
-		self.image = self.images[self.image_index]
+		if not self.exploded:
+			self.image_index = (self.image_index + 1) % 4
+			self.image = self.images[self.image_index]
 
 	def update(self):
 		"""Update position of shot."""
@@ -73,6 +74,7 @@ class InvaderShot(Sprite):
 		self.exploded = True
 		# Color shot black to hide it.
 		func.color_surface(self.image, self.settings.black)
+		#[func.color_surface(self.images[i], self.settings.black) for i in range(1, 5)]
 		# Create explosion "image".
 		self.explosion = Explosion(self.settings, self.screen, x, y,
 		                           False, True, False, False, False)

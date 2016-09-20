@@ -89,7 +89,7 @@ class Game():
                                          self.invaders, self.invader_shots)
 
             self.frame_count = func.update_invader_shots(self.settings, self.invader_shots, self.ground_blocks,
-                                                     self.frame_count)
+                                                         self.shields, self.frame_count)
 
             func.update_invaders(self.settings, self.screen, self.invaders, self.shields, self.invader_shots)
 
