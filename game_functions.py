@@ -284,6 +284,7 @@ def create_shield(settings, screen, number):
 def create_fleet(settings, screen, invaders):
 	"""Create a full fleet of invaders."""
 	# Create the fleet of aliens.
+
 	for row in range(settings.fleet_rows):
 		for column in range(settings.fleet_columns):
 			# Create an alien and place it in the fleet.

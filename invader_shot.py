@@ -24,9 +24,8 @@ class InvaderShot(Sprite):
 		self.shot_variant = 0
 		self.image_index = 0
 		self.image = self.images[self.image_index]
-		self.rect = self.image.get_rect()
-		self.rect.centerx = invader.rect.centerx
-		self.rect.top = invader.rect.bottom + 27
+		self.set_rect()
+
 
 		# Set time of last image flip, set it high at first so image starts flipping right away.
 		self.time_of_last_image_flip = 100
@@ -46,6 +45,13 @@ class InvaderShot(Sprite):
 		self.shot_variant = randint(1, 3)
 		self.images = [pygame.image.load("images/shots/invader-shot" + str(self.shot_variant) + "-" + str(n) + ".png")
 		               for n in range(1, 5)]
+	def set_rect(self):
+		self.rect = self.image.get_rect()
+		self.rect.top = self.invader.rect.bottom + 24
+		if self.invader.row == 0:
+			self.rect.x = self.invader.rect.x + 9
+		else:
+			self.rect.x = self.invader.rect.x + 15
 
 	def blitme(self):
 		"""Draw the InvaderShot at it's current location."""
