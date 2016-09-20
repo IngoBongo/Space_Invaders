@@ -20,8 +20,8 @@ class PlayerShot(Sprite):
 		self.image = pygame.image.load("images/shots/player_shot.png")
 		self.rect = self.image.get_rect()
 		self.rect.centerx = player.rect.centerx
-		self.rect.top = player.rect.top
-		
+		self.rect.top = player.rect.top - 24
+
 		# Blocks making up the explosion will be stored in this group.
 		self.explosion = Group()
 		
