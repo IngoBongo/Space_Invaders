@@ -227,10 +227,11 @@ def check_invader_shot_shield_collisions(settings, invader_shots, shields):
 
 		if collisions:
 			for shot, block_list in collisions.items():
-				shot.explode(shot.rect.x - 6, shot.rect.y)
-				pygame.sprite.groupcollide(shot.explosion.image, shield, False, True)
-				for block in shot.explosion.image:
-					color_surface(block.image, settings.green)
+				if not shot.exploded:
+					shot.explode(shot.rect.x - 6, shot.rect.y)
+					pygame.sprite.groupcollide(shot.explosion.image, shield, False, True)
+					for block in shot.explosion.image:
+						color_surface(block.image, settings.green)
 
 
 def check_shot_shield_collisions(settings, player_shots, shields):
@@ -265,13 +266,31 @@ def check_shot_shield_collisions(settings, player_shots, shields):
 
 def check_shot_shot_collision(settings, player_shots, invader_shots):
 	"""Respond to player_shot/invader_shot collisions."""
+	collisions = pygame.sprite.groupcollide(player_shots, invader_shots, False, False)
 
-	for shot in player_shots:
-		collisions = pygame.sprite.groupcollide(player_shots, invader_shots, False, False)
-
-		if collisions and not shot.exploded:
-			for p_shot, i_shot in collisions.items():
-				p_shot.explode(i_shot[0].rect.x, i_shot[0].rect.y)
+	if collisions:
+		for shot in player_shots:
+			# if shot hasn't collided with invader_shot then do collision
+			if not shot.collided_with_invader_shot:
+				shot.collided_with_invader_shot = True
+				choice = randint(0, 3)
+				# 0 = player_shot explodes
+				# 1 = invader_shot explodes
+				# 2 = both explode
+				# 3 = neither explode
+				if choice == 0:
+					if not shot.exploded:
+						for p_shot, i_shot_list in collisions.items():
+							p_shot.explode(p_shot.rect.x - 9, p_shot.rect.y - 18)
+				elif choice == 1:
+					for p_shot, i_shot_list in collisions.items():
+						for i_shot in i_shot_list:
+							i_shot.explode(i_shot.rect.x, i_shot.rect.y)
+				elif choice == 2:
+					for p_shot, i_shot_list in collisions.items():
+						p_shot.explode(p_shot.rect.x - 9, p_shot.rect.y - 18)
+						for i_shot in i_shot_list:
+							i_shot.explode(i_shot.rect.x, i_shot.rect.y)
 
 
 def create_lives(settings, screen, player):
@@ -342,8 +361,8 @@ def update_invaders(settings, screen, invaders, shields, invader_shots):
 		if invader.exploded and current_time - invader.time_of_last_move > 300:
 			invaders.remove(invader)
 
-	# 2% chance for invader to try shooting
-	if randint(0, 99) < 2:
+	# 1.5% chance for invader to try shooting
+	if randint(0, 199) < 3:
 		invader_shoot(settings, screen, find_invader_shooter(invaders), invader_shots)
 
 	# TODO: Causing lag, need to only check invader_shield_collision if lowest invader is at shield level?

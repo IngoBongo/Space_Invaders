@@ -68,7 +68,6 @@ class Game():
 
         # Make list of shield groups.
         self.shields = [func.create_shield(self.settings, self.screen, number) for number in range(4)]
-
         # Make group for lives and initialise it.
         self.remaining_lives = func.create_lives(self.settings, self.screen, self.player)
 
@@ -100,7 +99,7 @@ class Game():
             self.clock.tick(self.settings.fps)
 
             # Prints fps to console for debugging reasons
-            # print("FPS:", self.clock.get_fps())
+            print("FPS:", self.clock.get_fps())
 
 if __name__ == '__main__':
     Game().run_game()

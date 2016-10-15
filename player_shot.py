@@ -32,6 +32,7 @@ class PlayerShot(Sprite):
 		# Set exploded and color flag.
 		self.exploded = False
 		self.is_red = False
+		self.collided_with_invader_shot = False
 		
 	def blitme(self):
 		"""Draw the PlayerShot at it's current location."""
