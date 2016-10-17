@@ -443,27 +443,15 @@ def change_fleet_direction(settings, invaders):
 
 def find_invader_shooter(invaders, player):
 	"""Find an invader shooter to take the shot."""
-	column_set = set()
-	player_pos = player.rect.centerx
 	col = 0
 	# Create set of columns available
 	choice = randint(0, 1)
 	# 0 = try to shoot near player.
 	# 1 = shoot anywhere.
 	if choice == 0:
-		for invader in invaders:
-			column_set.add((invader.column, invader.rect.centerx))
-		column_list = []
-		for invader in column_set:
-			if invader[1] > player_pos - 30 and invader[1] < player_pos + 30:
-				column_list.append(invader[0])
-		col = column_list[randint(0, len(column_list) - 1)]
+		col = find_shooter_col_near_player(invaders, player)
 	else:
-		for invader in invaders:
-			column_set.add(invader.column)
-		# Select one column at random
-		column_list = list(column_set)
-		col = column_list[randint(0, len(column_list) - 1)]
+		col = find_random_shooter_col(invaders)
 
 	# Select lowest invader in column as shooter
 	row_invaders = []
@@ -476,6 +464,30 @@ def find_invader_shooter(invaders, player):
 	for invader in invaders:
 		if invader.column == col and invader.row == row and not invader.has_active_shot:
 			return invader
+
+
+def find_shooter_col_near_player(invaders, player):
+	column_set = set()
+	player_pos = player.rect.centerx
+	for invader in invaders:
+		column_set.add((invader.column, invader.rect.centerx))
+	column_list = []
+	for invader in column_set:
+		if invader[1] > player_pos - 30 and invader[1] < player_pos + 30:
+			column_list.append(invader[0])
+	if column_list:
+		return column_list[randint(0, len(column_list) - 1)]
+	else:
+		return find_random_shooter_col(invaders)
+
+
+def find_random_shooter_col(invaders):
+	column_set = set()
+	for invader in invaders:
+		column_set.add(invader.column)
+	# Select one column at random
+	column_list = list(column_set)
+	return column_list[randint(0, len(column_list) - 1)]
 
 
 def invader_shoot(settings, screen, shooter, invader_shots):
