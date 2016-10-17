@@ -90,7 +90,8 @@ class Game():
             self.frame_count = func.update_invader_shots(self.settings, self.invader_shots, self.ground_blocks,
                                                          self.shields, self.frame_count)
 
-            func.update_invaders(self.settings, self.screen, self.invaders, self.shields, self.invader_shots)
+            func.update_invaders(self.settings, self.screen, self.invaders, self.shields, self.invader_shots,
+                                 self.player)
 
             func.update_screen(self.settings, self.screen, self.scoreboard, self.player, self.player_shots,
                                self.ground_blocks, self.remaining_lives, self.shields, self.invaders,
@@ -99,7 +100,7 @@ class Game():
             self.clock.tick(self.settings.fps)
 
             # Prints fps to console for debugging reasons
-            print("FPS:", self.clock.get_fps())
+            #print("FPS:", self.clock.get_fps())
 
 if __name__ == '__main__':
     Game().run_game()

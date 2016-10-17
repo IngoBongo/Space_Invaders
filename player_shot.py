@@ -8,14 +8,14 @@ from explosion import Explosion
 
 class PlayerShot(Sprite):
 	"""A class representing a shot from the player."""
-	
+
 	def __init__(self, settings, screen, player):
 		"""Initialize the PlayerShot and set its position."""
 		super(PlayerShot, self).__init__()
 		self.screen = screen
 		self.settings = settings
 		self.player = player
-		
+
 		# Load shot image and set its rect.
 		self.image = pygame.image.load("images/shots/player_shot.png")
 		self.rect = self.image.get_rect()
@@ -24,20 +24,20 @@ class PlayerShot(Sprite):
 
 		# Blocks making up the explosion will be stored in this group.
 		self.explosion = Group()
-		
+
 		# Store a decimal value for the shot position.
 		self.y = float(self.rect.y)
 		self.center = float(player.rect.centerx)
-		
+
 		# Set exploded and color flag.
 		self.exploded = False
 		self.is_red = False
 		self.collided_with_invader_shot = False
-		
+
 	def blitme(self):
 		"""Draw the PlayerShot at it's current location."""
 		self.screen.blit(self.image, self.rect)
-	
+
 	def update(self):
 		"""Update position of bullet."""
 		# Move shot up the screen if it hasn't exploded.
@@ -46,7 +46,7 @@ class PlayerShot(Sprite):
 			# Update the rect.
 			self.rect.y = self.y
 			self.center = self.rect.centerx
-	
+
 	def explode(self, x, y):
 		"""Set shot to exploded state."""
 		self.exploded = True

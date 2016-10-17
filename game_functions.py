@@ -93,7 +93,7 @@ def update_screen(settings, screen, scoreboard, player, player_shots, ground_blo
 
 def player_shoot(settings, screen, player, player_shots):
 	"""Shoot from player if shot limit has not been reached."""
-	if len(player_shots) < settings.playershot_limit:
+	if len(player_shots) < settings.playershot_limit and player.allowed_to_shoot:
 		# Create shot and add to player_shots group.
 		player_shot = PlayerShot(settings, screen, player)
 		player_shots.add(player_shot)
@@ -128,7 +128,7 @@ def update_player_shots(settings, game_stats, player, player_shots, shields, inv
 
 	check_shot_shield_collisions(settings, player_shots, shields)
 	check_shot_shot_collision(settings, player_shots, invader_shots)
-	check_shot_alien_collisions(settings, game_stats, player_shots, invaders, player)
+	check_shot_invader_collisions(settings, game_stats, player_shots, invaders, player)
 
 
 def update_invader_shots(settings, invader_shots, ground_blocks, shields, frame_count):
@@ -180,13 +180,15 @@ def check_invader_shield_collisions(invaders, shields):
 		pygame.sprite.groupcollide(invaders, shield, False, True)
 
 
-def check_shot_alien_collisions(settings, game_stats, player_shots, invaders, player):
+def check_shot_invader_collisions(settings, game_stats, player_shots, invaders, player):
 	"""Respond to shot-invader collisions."""
 	# Remove player_shot when colliding.
 	collisions = pygame.sprite.groupcollide(player_shots, invaders, True, False)
 
 	# Create explosion for killed invader.
 	if collisions:
+		# Player isn't allowed to shoot while invader explosion is displayed.
+		player.allowed_to_shoot = False
 		for shot, invaders in collisions.items():
 			for invader in invaders:
 				invader.explode(invader.rect.x - 3, invader.rect.y)
@@ -240,7 +242,7 @@ def check_shot_shield_collisions(settings, player_shots, shields):
 	for shield in shields:
 		collisions = pygame.sprite.groupcollide(player_shots, shield, False, False)
 
-		# If there were collisions find lowest block 
+		# If there were collisions find lowest block
 		# that collided with shot.
 		if collisions:
 
@@ -351,15 +353,18 @@ def create_fleet(settings, screen, invaders):
 			invaders.add(new_invader)
 
 
-def update_invaders(settings, screen, invaders, shields, invader_shots):
+def update_invaders(settings, screen, invaders, shields, invader_shots, player):
 	check_fleet_boundary(settings, invaders)
 	current_time = pygame.time.get_ticks()
 	for invader in invaders.sprites():
 		invader.update(current_time)
 
 		# Show explosion for a little bit and then remove it.
+		print(player.allowed_to_shoot)
 		if invader.exploded and current_time - invader.time_of_last_move > 300:
 			invaders.remove(invader)
+			player.allowed_to_shoot = True
+			print(player.allowed_to_shoot)
 
 	# 1.5% chance for invader to try shooting
 	if randint(0, 199) < 3:
