@@ -455,7 +455,7 @@ def find_invader_shooter(invaders, player):
 			column_set.add((invader.column, invader.rect.centerx))
 		column_list = []
 		for invader in column_set:
-			if invader[1] > player_pos - 66 and invader[1] < player_pos + 66:
+			if invader[1] > player_pos - 30 and invader[1] < player_pos + 30:
 				column_list.append(invader[0])
 		col = column_list[randint(0, len(column_list) - 1)]
 	else:
