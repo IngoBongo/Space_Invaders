@@ -150,6 +150,7 @@ def update_invader_shots(settings, invader_shots, ground_blocks, shields, frame_
 			# Show explosion for a little bit and then remove it.
 			if shot.exploded and current_time - shot.explosion.timer > 300:
 				invader_shots.remove(shot)
+				shot.invader.has_active_shot = False
 
 		frame_count = 0
 	check_shot_ground_collisions(settings, invader_shots, ground_blocks)
@@ -391,9 +392,12 @@ def update_invaders(settings, screen, invaders, shields, invader_shots, player, 
 			invaders.remove(invader)
 			player.allowed_to_shoot = True
 
-	# 1.5% chance for invader to try shooting
-	if randint(0, 199) < 3 and stats.game_active:
-		invader_shoot(settings, screen, find_invader_shooter(invaders), invader_shots)
+	# 2.5% chance for invader to try shooting
+	if randint(0, 199) < 5 and stats.game_active:
+		shooter = None
+		while shooter is None:
+			shooter = find_invader_shooter(invaders, player)
+		invader_shoot(settings, screen, shooter, invader_shots)
 
 	# TODO: Causing lag, need to only check invader_shield_collision if lowest invader is at shield level?
 	# check_invader_shield_collisions(invaders, shields)
@@ -437,16 +441,29 @@ def change_fleet_direction(settings, invaders):
 		invader.rect.x += settings.invader_move_x * settings.fleet_direction
 
 
-def find_invader_shooter(invaders):
+def find_invader_shooter(invaders, player):
+	"""Find an invader shooter to take the shot."""
 	column_set = set()
-
+	player_pos = player.rect.centerx
+	col = 0
 	# Create set of columns available
-	for invader in invaders:
-		column_set.add(invader.column)
-
-	# Select one column at random
-	column_list = list(column_set)
-	col = column_list[randint(0, len(column_list) - 1)]
+	choice = randint(0, 1)
+	# 0 = try to shoot near player.
+	# 1 = shoot anywhere.
+	if choice == 0:
+		for invader in invaders:
+			column_set.add((invader.column, invader.rect.centerx))
+		column_list = []
+		for invader in column_set:
+			if invader[1] > player_pos - 66 and invader[1] < player_pos + 66:
+				column_list.append(invader[0])
+		col = column_list[randint(0, len(column_list) - 1)]
+	else:
+		for invader in invaders:
+			column_set.add(invader.column)
+		# Select one column at random
+		column_list = list(column_set)
+		col = column_list[randint(0, len(column_list) - 1)]
 
 	# Select lowest invader in column as shooter
 	row_invaders = []
@@ -457,11 +474,12 @@ def find_invader_shooter(invaders):
 	row = max(row_invaders)
 
 	for invader in invaders:
-		if invader.column == col and invader.row == row:
+		if invader.column == col and invader.row == row and not invader.has_active_shot:
 			return invader
 
 
 def invader_shoot(settings, screen, shooter, invader_shots):
 	if len(invader_shots) < settings.invadershot_limit:
+		shooter.has_active_shot = True
 		invader_shot = InvaderShot(settings, screen, shooter)
 		invader_shots.add(invader_shot)

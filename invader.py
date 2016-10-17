@@ -27,9 +27,10 @@ class Invader(Sprite):
 		# Set time of last time invader moved/time of instantiation.
 		self.time_of_last_move = pygame.time.get_ticks()
 
-		# Set moved flag.
+		# Flags.
 		self.has_moved = False
 		self.exploded = False
+		self.has_active_shot = False
 
 	def change_image(self):
 		"""Change to next image."""
