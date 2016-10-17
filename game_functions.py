@@ -52,8 +52,8 @@ def check_keyup_events(event, player):
 		player.moving_left = False
 
 
-def update_screen(settings, screen, scoreboard, player, player_shots, ground_blocks, remaining_lives, shields,
-                  invaders, invader_shots):
+def update_screen(settings, screen, scoreboard, player, player_shots, ground_blocks, shields,
+                  invaders, invader_shots, stats):
 	"""Update every image on the screen then draw the screen."""
 	# Set the background color.
 	screen.fill(settings.black)
@@ -65,7 +65,12 @@ def update_screen(settings, screen, scoreboard, player, player_shots, ground_blo
 	invader_shots.draw(screen)
 
 	# Draw the player ship.
-	player.blitme()
+	if player.image_change_counter < 11:
+		player.blitme()
+	elif player.image_change_counter == 11:
+		stats.ships_left -= 1
+		player.reset_ship()
+		stats.game_active = True
 
 	# Draw the fleet.
 	invaders.draw(screen)
@@ -73,13 +78,13 @@ def update_screen(settings, screen, scoreboard, player, player_shots, ground_blo
 	# Draw ground, scoreboard and lives.
 	ground_blocks.draw(screen)
 	scoreboard.show_score()
-	show_lives(settings, screen, player, remaining_lives)
+	show_lives(settings, screen, player, stats)
 
 	# Draw shields.
 	for shield in shields:
 		shield.draw(screen)
 
-	# Draw explosions.
+	# Draw shot explosions.
 	for shot in player_shots:
 		if shot.exploded:
 			shot.explosion.image.draw(screen)
@@ -131,7 +136,7 @@ def update_player_shots(settings, game_stats, player, player_shots, shields, inv
 	check_shot_invader_collisions(settings, game_stats, player_shots, invaders, player)
 
 
-def update_invader_shots(settings, invader_shots, ground_blocks, shields, frame_count):
+def update_invader_shots(settings, invader_shots, ground_blocks, shields, frame_count, player, stats):
 	"""Update position of invader shots."""
 	frame_count += 1
 	if frame_count == 3:
@@ -149,7 +154,23 @@ def update_invader_shots(settings, invader_shots, ground_blocks, shields, frame_
 		frame_count = 0
 	check_shot_ground_collisions(settings, invader_shots, ground_blocks)
 	check_invader_shot_shield_collisions(settings, invader_shots, shields)
+
+	collisions = pygame.sprite.spritecollideany(player, invader_shots)
+	if collisions and stats.game_active:
+		collisions.explode(collisions.rect.x, collisions.rect.y)
+		for block in collisions.explosion.image:
+			color_surface(block.image, settings.green)
+		player_killed(settings, stats, player)
+
 	return frame_count
+
+
+def player_killed(settings, stats, player):
+	"""Respond to player being killed."""
+	player.explode()
+
+	if stats.ships_left > 0:
+		stats.game_active = False
 
 
 def color_surface(surface, rgb_color):
@@ -294,9 +315,9 @@ def check_shot_shot_collision(settings, player_shots, invader_shots):
 						for i_shot in i_shot_list:
 							i_shot.explode(i_shot.rect.x, i_shot.rect.y)
 
-
+"""
 def create_lives(settings, screen, player):
-	"""Create and return group of sprites for remaining lives."""
+	Create and return group of sprites for remaining lives.
 	remaining_lives = Group()
 
 	for number in range(player.remaining_lives - 1):
@@ -306,15 +327,21 @@ def create_lives(settings, screen, player):
 		remaining_lives.add(new_life)
 
 	return remaining_lives
+"""
 
-
-def show_lives(settings, screen, player, remaining_lives):
+def show_lives(settings, screen, player, stats):
 	"""Draw text and ship images for lives."""
 	# Draw ship images.
-	remaining_lives.draw(screen)
+	#remaining_lives.draw(screen)
+
+	for number in range(stats.ships_left - 1):
+		# Create life and add it to remaining_lives.
+		new_life = Life(settings, screen, (settings.life_ship_offsetx + (settings.life_ship_spacing + 39) * number),
+		                settings.life_y)
+		new_life.blitme()
 
 	# Render number of lives into image and draw it.
-	lives_text = Text(settings, screen, settings.font_size, str(player.remaining_lives), settings.white,
+	lives_text = Text(settings, screen, settings.font_size, str(stats.ships_left), settings.white,
 					  settings.life_text_offsetx, settings.life_y)
 	lives_text.blitme()
 
@@ -353,21 +380,19 @@ def create_fleet(settings, screen, invaders):
 			invaders.add(new_invader)
 
 
-def update_invaders(settings, screen, invaders, shields, invader_shots, player):
+def update_invaders(settings, screen, invaders, shields, invader_shots, player, stats):
 	check_fleet_boundary(settings, invaders)
 	current_time = pygame.time.get_ticks()
 	for invader in invaders.sprites():
-		invader.update(current_time)
+		invader.update(current_time, stats)
 
 		# Show explosion for a little bit and then remove it.
-		print(player.allowed_to_shoot)
 		if invader.exploded and current_time - invader.time_of_last_move > 300:
 			invaders.remove(invader)
 			player.allowed_to_shoot = True
-			print(player.allowed_to_shoot)
 
 	# 1.5% chance for invader to try shooting
-	if randint(0, 199) < 3:
+	if randint(0, 199) < 3 and stats.game_active:
 		invader_shoot(settings, screen, find_invader_shooter(invaders), invader_shots)
 
 	# TODO: Causing lag, need to only check invader_shield_collision if lowest invader is at shield level?

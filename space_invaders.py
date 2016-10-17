@@ -54,7 +54,7 @@ class Game():
         func.create_fleet(self.settings, self.screen, self.invaders)
 
         # Make GameStats object.
-        self.game_stats = GameStats()
+        self.game_stats = GameStats(self.settings)
 
         # Make ScoreBoard object.
         self.scoreboard = ScoreBoard(self.settings, self.screen, self.player, self.game_stats)
@@ -69,7 +69,7 @@ class Game():
         # Make list of shield groups.
         self.shields = [func.create_shield(self.settings, self.screen, number) for number in range(4)]
         # Make group for lives and initialise it.
-        self.remaining_lives = func.create_lives(self.settings, self.screen, self.player)
+        #self.remaining_lives = func.create_lives(self.settings, self.screen, self.player)
 
         self.frame_count = 0
 
@@ -88,16 +88,17 @@ class Game():
                                          self.invaders, self.invader_shots)
 
             self.frame_count = func.update_invader_shots(self.settings, self.invader_shots, self.ground_blocks,
-                                                         self.shields, self.frame_count)
+                                                         self.shields, self.frame_count, self.player, self.game_stats)
 
             func.update_invaders(self.settings, self.screen, self.invaders, self.shields, self.invader_shots,
-                                 self.player)
+                                 self.player, self.game_stats)
 
             func.update_screen(self.settings, self.screen, self.scoreboard, self.player, self.player_shots,
-                               self.ground_blocks, self.remaining_lives, self.shields, self.invaders,
-                               self.invader_shots)
+                               self.ground_blocks, self.shields, self.invaders,
+                               self.invader_shots, self.game_stats)
             # Set max fps.
             self.clock.tick(self.settings.fps)
+            #self.clock.tick(10)
 
             # Prints fps to console for debugging reasons
             #print("FPS:", self.clock.get_fps())
