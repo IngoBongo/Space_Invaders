@@ -71,7 +71,7 @@ def update_screen(settings, screen, scoreboard, player, player_shots, ground_blo
 		stats.ships_left -= 1
 		player.reset_ship()
 		stats.game_active = True
-
+		
 	# Draw the fleet.
 	invaders.draw(screen)
 

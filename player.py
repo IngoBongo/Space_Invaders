@@ -93,12 +93,14 @@ class Player(Sprite):
 		self.frame_count = 0
 		self.image_change_counter = 0
 		self.exploded = False
+		self.allowed_to_shoot = True
 		self.set_ship_image()
 		self.set_starting_position()
 
 	def explode(self):
 		"""Set player to exploded state."""
 		self.exploded = True
+		self.allowed_to_shoot = False
 		self.explosion_image_index = 0
 		self.image = self.explosion_image[0]
 		self.rect.x = self.rect.x - 6
