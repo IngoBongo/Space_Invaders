@@ -71,7 +71,7 @@ def update_screen(settings, screen, scoreboard, player, player_shots, ground_blo
 		stats.ships_left -= 1
 		player.reset_ship()
 		stats.game_active = True
-		
+
 	# Draw the fleet.
 	invaders.draw(screen)
 
@@ -201,7 +201,7 @@ def check_invader_shield_collisions(invaders, shields):
 		pygame.sprite.groupcollide(invaders, shield, False, True)
 
 
-def check_shot_invader_collisions(settings, game_stats, player_shots, invaders, player):
+def check_shot_invader_collisions(settings, stats, player_shots, invaders, player):
 	"""Respond to shot-invader collisions."""
 	# Remove player_shot when colliding.
 	collisions = pygame.sprite.groupcollide(player_shots, invaders, True, False)
@@ -214,19 +214,19 @@ def check_shot_invader_collisions(settings, game_stats, player_shots, invaders, 
 			for invader in invaders:
 				invader.explode(invader.rect.x - 3, invader.rect.y)
 				settings.invader_killed.play()
-				update_score(settings, game_stats, invader.row, player)
+				update_score(settings, stats, invader.row)
 
 
-def update_score(settings, game_stats, row, player):
+def update_score(settings, stats, row):
 	"""Update player/hi score depending on invader row."""
 	if row == 0:
-		player.score = (player.score + settings.invader_1_score) % 10000
+		stats.score = (stats.score + settings.invader_1_score) % 10000
 	elif row == 1 or row == 2:
-		player.score = (player.score + settings.invader_2_score) % 10000
+		stats.score = (stats.score + settings.invader_2_score) % 10000
 	else:
-		player.score = (player.score + settings.invader_3_score) % 10000
-	if player.score > game_stats.hi_score:
-		game_stats.hi_score = player.score
+		stats.score = (stats.score + settings.invader_3_score) % 10000
+	if stats.score > stats.hi_score:
+		stats.hi_score = stats.score
 
 
 def check_shot_ground_collisions(settings, invader_shots, ground_blocks):
@@ -318,7 +318,7 @@ def check_shot_shot_collision(settings, player_shots, invader_shots):
 """
 def create_lives(settings, screen, player):
 	Create and return group of sprites for remaining lives.
-	remaining_lives = Group()
+	score = Group()
 
 	for number in range(player.remaining_lives - 1):
 		# Create life and add it to remaining_lives.

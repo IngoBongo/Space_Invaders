@@ -6,12 +6,11 @@ from text import Text
 class ScoreBoard:
 	"""A class to show the current and high score."""
 
-	def __init__(self, settings, screen, player, game_stats):
+	def __init__(self, settings, screen, stats):
 		"""Initialize scoreboard."""
 		self.screen = screen
 		self.settings = settings
-		self.game_stats = game_stats
-		self.player = player
+		self.stats = stats
 
 		# Prep score images.
 		self.player1_score_text = []
@@ -47,8 +46,8 @@ class ScoreBoard:
 	def prep_player1_score(self):
 		"""Create rendered image of score."""
 		# Add space between each character and add extra space after each occurrence of '1'.
-		score = " ".join(str(self.player.score)).replace("1", " 1")
-		num_length = len(str(self.player.score))
+		score = " ".join(str(self.stats.score)).replace("1", " 1")
+		num_length = len(str(self.stats.score))
 
 		if num_length < 4:
 			score = ("0 " * (4 - num_length)) + score
@@ -60,8 +59,8 @@ class ScoreBoard:
 	def prep_hi_score(self):
 		"""Create rendered image of hi-score."""
 		# Add space between each character and add extra space after each occurrence of '1'.
-		hi_score = " ".join(str(self.game_stats.hi_score)).replace("1", " 1")
-		num_length = len(str(self.game_stats.hi_score))
+		hi_score = " ".join(str(self.stats.hi_score)).replace("1", " 1")
+		num_length = len(str(self.stats.hi_score))
 
 		if num_length < 4:
 			hi_score = ("0 " * (4 - num_length)) + hi_score

@@ -12,16 +12,11 @@ class Player(Sprite):
 
 		# Load ship image and set rect for image and screen.
 		self.set_ship_image()
-		self.screen_rect = screen.get_rect()
 		self.explosion_image = self.load_explosion_images()
 		self.explosion_image_index = 0
 
 		# Set the players starting position.
 		self.set_starting_position()
-		#self.rect.centery = self.screen_rect.centery
-
-		# Store a decimal value for the ships center for fluid movement.
-		self.center = float(self.rect.centerx)
 
 		# Flags.
 		self.moving_right = False
@@ -30,17 +25,9 @@ class Player(Sprite):
 		self.has_active_shot = False
 		self.exploded = False
 
-		# TODO: move remaining lives to stats class
-		# Lives remaining.
-		self.remaining_lives = settings.player_lives
-
 		# Set boundaries.
 		self.left_boundary = settings.player_offsetx
 		self.right_boundary = (settings.screen_width - 123)
-
-		# TODO: move score to stats class
-		# Players score.
-		self.score = 0
 
 		self.frame_count = 0
 		self.image_change_counter = 0

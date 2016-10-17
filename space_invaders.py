@@ -57,7 +57,7 @@ class Game():
         self.game_stats = GameStats(self.settings)
 
         # Make ScoreBoard object.
-        self.scoreboard = ScoreBoard(self.settings, self.screen, self.player, self.game_stats)
+        self.scoreboard = ScoreBoard(self.settings, self.screen, self.game_stats)
 
         # Make player shot object Group.
         self.player_shots = Group()
@@ -101,7 +101,7 @@ class Game():
             #self.clock.tick(10)
 
             # Prints fps to console for debugging reasons
-            #print("FPS:", self.clock.get_fps())
+            print("FPS:", self.clock.get_fps())
 
 if __name__ == '__main__':
     Game().run_game()
